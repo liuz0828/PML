@@ -1,0 +1,7 @@
+define function !!aiddetail()
+AID CLEAR TEXT ALL
+!POS = POS OF CE WRT WORLD
+!RTEXT = RTEXT OF DETREF
+AID TEXT NUMBER 100 '$!RTEXT' AT $!POS
+$p $!RTEXT
+endfunction

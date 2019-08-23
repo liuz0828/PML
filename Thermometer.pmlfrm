@@ -1,0 +1,106 @@
+setup form !!Thermometer size 25 5
+Title '管线上温度计组件'
+
+	paragraph .Message text '请输入仪表名称 '
+	text .input  at x0 ymax+0.5 width 10 is string
+	button .applya '选择三通件' at x0 ymax+1
+
+exit
+
+Define method .Thermometer() 
+
+  !this.applya.callback = '!this.applya()'
+
+endmethod
+
+
+Define  method .applya()
+    !name = !this.input.val
+	new bran 
+	conn ph to id@
+	for
+	choose autoconnect on
+	!Href = href of ce
+	!Hrefstr = !Href.string()
+	!Hconn = hconn of ce
+	!LenghtOlet = PARA5 OF CATREF OF $!Hrefstr 
+	!LenghtTee = PARA6 OF CATREF OF $!Hrefstr 
+	!PipeDiameter = PARA2 OF CATREF OF LSTUBE OF $!Hrefstr
+	!ResultOlet = 150 - ($!LenghtOlet[1] - 0.5 * $!PipeDiameter[1])
+	!ResultTee = 150 - ($!LenghtTee[1] - 0.5 * $!PipeDiameter[1])
+	!bspec = name of bspec of pspec of ce 
+	!bspecstr = !bspec.string()
+	!split = !bspecstr.split('-')
+
+$(
+	if (!split[1] eq '/CL150') then
+		new FLAN choose with Stype 'F62R'
+		HANDLE ANY
+		ENDHANDLE
+		FLIP
+		Fconn sel lstu pos p1 dist $!Result from ph 
+		new GASK choose with Stype 'GBB'
+		NEW INST sel wi spec /Instrument stype 'TP62'
+
+		name /$!name
+		fconn
+		bran 
+		conn pt to last mem
+	elseif (!split[1] eq '/CL300') then
+$)
+	if ( !Hconn eq 'BWD' ) then
+		new FLAN choose with Stype 'F63R'
+		HANDLE ANY
+		ENDHANDLE
+		Fconn sel lstu pos p1 dist $!ResultTee from ph 
+		new GASK choose with Stype 'GBD'
+		NEW INST sel wi spec /Instrument stype 'TP63'
+		mtoc off
+		if (!name eq '') then
+			fconn
+			bran 
+			conn pt to last mem
+		else
+			name /$!name
+			fconn
+			bran 
+			conn pt to last mem
+		endif
+	else
+		new FLAN choose with Stype 'F63R'
+		HANDLE ANY
+		ENDHANDLE
+		FLIP
+		Fconn sel lstu pos p1 dist $!ResultOlet from ph 
+		new GASK choose with Stype 'GBD'
+		NEW INST sel wi spec /Instrument stype 'TP63'
+		mtoc off
+		if (!name eq '') then
+			fconn
+			bran 
+			conn pt to last mem
+		else
+			name /$!name
+			fconn
+			bran 
+			conn pt to last mem
+		endif
+	endif
+$(
+	else
+		new FLAN choose with Stype 'F66R'
+		HANDLE ANY
+		ENDHANDLE
+		FLIP
+		Fconn sel lstu pos p1 dist $!Result from ph 
+		new GASK choose with Stype 'GBF'
+		NEW INST sel wi spec /Instrument stype 'TP66'
+		name /$!name
+		fconn
+		bran 
+		conn pt to last mem
+	endif
+$)
+endmethod
+
+	

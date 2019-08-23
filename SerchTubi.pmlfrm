@@ -1,0 +1,107 @@
+setup form !!SerchTubi
+Title '查询TUBI'
+--paragraph .Message text '  请输入  '
+--text .input '  请输入  ' width 10 is string $*字符串类型的编辑框
+--button .apply '添加进视图' Apply
+--exit
+
+button .ce 'CE '
+paragraph .cename text 'No name' width 25 height 1
+button .apply at x0 ymax+0.5 '查询' Apply 
+button .cancel '取消' at x22 Cancel
+List.lll at x0 ymax+0.5 width 25 height 10
+exit
+
+
+Define method .SerchTubi() $*缺省构造方法,与Form同名,不带参数
+	
+	!this.ce.callback = '!this.ce()'
+	!this.apply.callback = '!this.apply()'
+	!this.apply.callback = '!this.lll()'
+
+endmethod
+
+--Define method .doinput() $*响应操作,’.’前面加空格
+--!this.add.callback = !this.input.val $*!this = !!hello, val 表示value
+--endmethod
+
+Define method .ce()
+
+	!this.cename.val = fullname
+
+endmethod
+
+Define method .apply()
+	VAR !Tubis COLL ALL TUBI FOR CE
+	!Itlengths = ARRAY()
+	!Sprefs = ARRAY()
+	DO !Tubi VALUES !Tubis
+		$!Tubi
+		!Itlength = Itlength OF CE
+		!Itlengths.Append(!Itlength)
+		!Spref = Spref OF CE
+		!Sprefs.Append(!Spref)
+		
+	ENDDO
+	
+	!OUTPUT =OBJECT FILE ('D:\TEMP\I.TXT')
+	!OUTPUT.WRITEFILE('OVERWRITE',!Itlengths)
+	!OUTPUT =OBJECT FILE ('D:\TEMP\S.TXT')
+	!OUTPUT.WRITEFILE('OVERWRITE',!Sprefs)
+	
+endmethod
+
+
+Define method .lll()
+
+	!a[1] = '111'
+	!a[2] = '222'
+	!a[3] = '333'
+
+	!This.lll.setHeadings(!a)
+	
+	!Itlengths = ARRAY()
+	!Sprefs = ARRAY()
+	VAR !Tubis COLL ALL TUBI FOR CE
+	DO !Tubi VALUES !Tubis
+		$!Tubi
+		!Itlength = Itlength OF CE
+		!Itlengthstr = !Itlength.string()
+		!Itlengths.Append(!Itlengthstr)
+		!Spref = Spref OF CE
+		!Sprefstr = !Spref.string()
+		!Sprefs.Append(!Sprefstr)
+		
+	ENDDO
+	
+	--i = 1 to  2   j = 1 to !Itlengths.size()
+
+	do !j from 1 to !Itlengths.size()
+      !a!j[1] = '!Itlengths$!j'
+	  !a!j[2]  = '!Sprefs$!j'
+    enddo
+
+    --!a1[1] = !Itlengths[1] 
+	--!a1[2] = !Sprefs[1] 
+	--!a2[1] = !Itlengths[2] 
+	--!a2[2] = !Sprefs[2] 
+
+	
+	!dtext[1] = !a1
+	!dtext[2] = !a2
+	
+    !this.lll.setRows( !dtext )
+	-do !i from 1 to !dtext.size()
+    -  !rtext[!i] = 'a $!i'
+    -enddo
+
+
+	-!this.lll.rtext = !rtext
+
+	
+
+	
+endmethod	
+--var !zoness coll all zone with match(name of zone, '2416-ML') neq 0 for world 
+--!zones.appendarray(!zoness)
+

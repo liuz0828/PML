@@ -1,0 +1,48 @@
+setup form !!draintyped
+Title '排放形式D'
+
+  button .applya '请选择三通件' 
+
+exit
+
+Define method .draintyped() 
+
+  !this.applya.callback = '!this.applya()'
+
+endmethod
+
+
+
+define method .applya()
+	new bran 
+	conn ph to id@
+	for
+	choose autoconnect on
+   	!PipeName = name of pipe of ce 
+	Do !x To 20
+		VAR !EXIST EXIST $!PipeName/B$!x
+		IF(match(!EXIST,'TRUE') GT 0) THEN
+			skip
+		else
+			Name $!PipeName/B$!x
+			break
+		endif
+	Enddo
+	new elbo choose with Stype '2C76'
+	HANDLE ANY
+	ENDHANDLE  
+	Fconn sel lstu  pos pa dist 100 from ph
+	dir D
+	new valv choose with Stype '1C01'
+	HANDLE ANY
+	ENDHANDLE
+	Fconn sel lstu  pos pa dist 100 from pl of prev
+	ROTATE ABOUT PA BY 180
+	new ftub choose with Stype '3C89'
+	new cap choose with stype '2C21'
+	bran 
+	conn pt to last mem
+
+endmethod
+
+

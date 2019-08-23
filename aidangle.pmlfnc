@@ -1,0 +1,39 @@
+define function !!aidangle()
+AID CLEAR TEXT ALL
+--!EQUIPOS= POS WRT WORLD
+Var !TUBEs Coll All TUBI EXCLUSIVE Within Volume CE 1500
+
+DO !TUBE VALUE !TUBES
+   !ORI = ORI OF $!TUBE WRT WORLD
+   IF(!ORI.STRING().MATCH('Y is U') GT 0 ) THEN     
+   ELSEIF(!ORI.STRING().MATCH('Y is D') GT 0)  THEN
+   ELSE
+      SKIP
+   ENDIF
+   !POS = POS OF $!TUBE WRT WORLD
+   !TUBEPOS = POS OF $!TUBE WRT CE
+   !N=!TUBEPOS.NORTH
+   !E=!TUBEPOS.EAST
+   
+   IF(!N EQ 0 OR !E EQ 0) THEN
+      SKIP
+   ELSEIF(!N GT 0 AND !E GT 0) THEN
+      !ANG=ATAN(!N / !E) + 270
+   ELSEIF(!N GT 0 AND !E LT 0) THEN
+      !ANG=-ATAN(!E / !N)
+   ELSEIF(!N LT 0 AND !E LT 0) THEN
+      !ANG=ATAN(!N / !E) + 90
+   ELSEIF(!N LT 0 AND !E GT 0) THEN
+      !ANG=-ATAN(!E / !N) + 180
+   ENDIF
+
+
+
+   --!DISTANCE = SQRT(!N * !N + !E * !E)
+   --!D=!DISTANCE.NINT()
+   !ANGN=!ANG.NINT()
+   AID TEXT NUMBER 100 '$!ANGN DEG' AT $!POS 
+ENDDO
+
+
+endfunction

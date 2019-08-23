@@ -1,0 +1,619 @@
+setup form !!addtemp
+Title '修改管道属性'
+button .ce 'CE '
+paragraph .cename text 'No name' width 25 height 1
+paragraph .Messagee at x0 ymax+0.5 text '管径'
+option .borePosition AT XMAX+5 width 10 
+paragraph .Messagef at x0 ymax+0.5 text '保温'
+option .optPosition  AT XMAX+5 width 10
+paragraph .Messageg at x0 ymax+0.5 text '伴热'
+option .traPosition  AT XMAX+5 width 10
+paragraph .Messagea at x0 ymax+0.5 text '操作温度'
+text .inputa width 10 is real 
+paragraph .Messageb at x0 ymax+0.5 text '操作压力' 
+text .inputb  width 10 is string 
+paragraph .Messagec at x0 ymax+0.5 text '设计温度'
+text .inputc   width 10 is string 
+paragraph .Messaged at x0 ymax+0.5 text '设计压力'
+text .inputd   width 10 is string 
+paragraph .Messagej at x0 ymax+0.5 text '管道级(类)别'
+text .inputj   at xmax-3 width 10 is string 
+paragraph .Messagek at x0 ymax+0.5 text '防腐涂料'
+text .inputk   at xmax+1  width 10 is string 
+paragraph .Messagel at x0 ymax+0.5 text '绝热类型/厚度'
+text .inputl   at xmax-4  width 10 is string 
+paragraph .Messagem at x0 ymax+0.5 text '清洗    '
+text .inputm   at xmax+1  width 10 is string 
+paragraph .Messagen at x0 ymax+0.5 text '应力消除'
+text .inputn   at xmax+1  width 10 is string 
+paragraph .Messageo at x0 ymax+0.5 text '检验等级'
+text .inputo   at xmax+1  width 10 is string 
+paragraph .Messagep at x0 ymax+0.5 text '热处理'
+text .inputp   at xmax+1  width 10 is string 
+paragraph .Messageh at x0 ymax+0.5 text '管段号'
+text .inputh  at xmax+3 width 15 is string 
+paragraph .Messagei at x0 ymax+0.5 text '图号'
+text .inputi  at xmax+5 width 15 is string 
+
+button .apply at x0 ymax+0.5 '确定' Apply 
+button .cancel '取消' at x22 Cancel
+exit
+
+Define method .addtemp() $*缺省构造方法,与Form同名,不带参数
+!this.ce.callback = '!this.ce()'
+
+   !this.apply.callback = '!this.apply()'
+   
+   !borearray[1] = 'unset'
+   !borearray[2] = '15'
+   !borearray[3] = '20'
+   !borearray[4] = '25'
+   !borearray[5] = '32'
+   !borearray[6] = '40'
+   !borearray[7] = '50'
+   !borearray[8] = '65'
+   !borearray[9] = '80'
+   !borearray[10] = '100'
+   !borearray[11] = '125'
+   !borearray[12] = '150'
+   !borearray[13] = '200'
+   !borearray[14] = '250'   
+   !borearray[15] = '300'
+   !borearray[16] = '350'
+   !borearray[17] = '400'
+   !borearray[18] = '450'
+   !borearray[19] = '500'
+   !borearray[20] = '550'
+   !borearray[21] = '600'
+   !borearray[22] = '650'
+   !borearray[23] = '700'
+   !borearray[24] = '750'
+   !borearray[25] = '800'
+   !borearray[26] = '850'
+   !borearray[27] = '900'
+   !borearray[28] = '950'
+   !borearray[29] = '1000'
+   !borearray[30] = '1100'
+   !borearray[31] = '1200'
+
+   !this.boreposition.dtext = !borearray
+
+   !optarray[1] = 'unset'
+   !optarray[2] = '/H'
+   !optarray[3] = '/20mm_IASP'
+   !optarray[4] = '/30mm_IASP'
+   !optarray[5] = '/40mm_IASP'
+   !optarray[6] = '/45mm_IASP'
+   !optarray[7] = '/50mm_IASP'
+   !optarray[8] = '/55mm_IASP'
+   !optarray[9] = '/60mm_IASP'
+   !optarray[10] = '/65mm_IASP'   
+   !optarray[11] = '/70mm_IASP'
+   !optarray[12] = '/75mm_IASP'
+   !optarray[13] = '/80mm_IASP'
+   !optarray[14] = '/90mm_IASP'
+   !optarray[15] = '/100mm_IASP'
+   !optarray[16] = '/110mm_IASP'
+   !optarray[17] = '/120mm_IASP'
+   !optarray[18] = '/130mm_IASP'   
+   !optarray[19] = '/140mm_IASP'  
+   !optarray[20] = '/150mm_IASP' 
+   !optarray[21] = '/160mm_IASP'
+   !optarray[22] = '/170mm_IASP'   
+   !optarray[23] = '/20mm_IRWP'
+   !optarray[24] = '/30mm_IRWP'
+   !optarray[25] = '/35mm_IRWP'
+   !optarray[26] = '/40mm_IRWP'
+   !optarray[27] = '/45mm_IRWP'
+   !optarray[28] = '/50mm_IRWP'
+   !optarray[29] = '/55mm_IRWP'
+   !optarray[30] = '/60mm_IRWP'
+   !optarray[31] = '/65mm_IRWP'
+   !optarray[32] = '/70mm_IRWP'
+   !optarray[33] = '/80mm_IRWP'
+   !optarray[34] = '/90mm_IRWP'
+   !optarray[35] = '/100mm_IRWP'
+   !optarray[36] = '/PPINSU'
+   !optarray[37] = '/20mm_FibreGlass'
+   !optarray[38] = '/30mm_FibreGlass'
+   !optarray[39] = '/40mm_FibreGlass'
+   !optarray[40] = '/50mm_FibreGlass'
+   !optarray[41] = '/60mm_FibreGlass'
+   !optarray[42] = '/70mm_FibreGlass'
+   !optarray[43] = '/80mm_FibreGlass'
+   !optarray[44] = '/90mm_FibreGlass'
+   !optarray[45] = '/100mm_FibreGlass'
+   !optarray[46] = '/110mm_FibreGlass'
+   !optarray[47] = '/120mm_FibreGlass'
+   !optarray[48] = '/130mm_FibreGlass'
+   !optarray[49] = '/140mm_FibreGlass'
+   !optarray[50] = '/150mm_FibreGlass'
+   !optarray[51] = '/160mm_FibreGlass'
+   !optarray[52] = '/IRWP' 
+   !optarray[53] = '/IASP'   
+   !optarray[54] = '/IAMP'
+   !optarray[55] = '/UNSP'
+   !optarray[56] = '/20mm_IAMP'
+   !optarray[57] = '/30mm_IAMP'
+   !optarray[58] = '/35mm_IAMP'
+   !optarray[59] = '/40mm_IAMP'
+   !optarray[60] = '/45mm_IAMP'
+   !optarray[61] = '/50mm_IAMP'
+   !optarray[62] = '/55mm_IAMP'
+   !optarray[63] = '/60mm_IAMP'
+   !optarray[64] = '/65mm_IAMP'
+   !optarray[65] = '/70mm_IAMP'
+   !optarray[66] = '/75mm_IAMP'
+   !optarray[67] = '/80mm_IAMP'
+   !optarray[68] = '/85mm_IAMP'
+   !optarray[69] = '/90mm_IAMP'
+   !optarray[70] = '/100mm_IAMP'
+   !optarray[71] = '/110mm_IAMP'
+   !optarray[72] = '/120mm_IAMP'
+   !optarray[73] = '/130mm_IAMP'
+   !optarray[74] = '/140mm_IAMP'
+   !optarray[75] = '/150mm_IAMP'
+   !optarray[76] = '/20mm_SYGX'
+   !optarray[77] = '/30mm_SYGX'
+   !optarray[78] = '/40mm_SYGX'
+   !optarray[79] = '/50mm_SYGX'
+   !optarray[80] = '/60mm_SYGX'
+   !optarray[81] = '/70mm_SYGX'
+   !optarray[82] = '/80mm_SYGX'
+   !optarray[83] = '/90mm_SYGX'
+   !optarray[84] = '/100mm_SYGX'
+   !optarray[85] = '/110mm_SYGX'
+   !optarray[86] = '/140mm_SYGX'
+   !optarray[87] = '/160mm_SYGX'
+   !optarray[88] = '/170mm_SYGX'
+   !optarray[89] = '/210mm_SYGX'
+             
+  
+   !this.optposition.dtext = !optarray
+
+   !traarray[1] = 'unset'
+   !traarray[2] = '/ST'
+   !traarray[3] = '/TE'
+   !traarray[4] = '/ET'
+   !traarray[5] = '/HT'
+   !traarray[6] = '/1X15'
+   !traarray[7] = '/1X20'
+   !traarray[8] = '/1X25'
+   !traarray[9] = '/2X15'
+   !traarray[10] = '/2X20'
+   !traarray[11] = '/2X25'
+   !traarray[12] = '/3X20'
+   !traarray[13] = '/3X25'
+   !traarray[14] = '/4X20'
+  
+  
+  
+   !this.traposition.dtext = !traarray
+   
+
+endmethod
+
+define method .ce()
+
+   !borearray[1] = 'unset'
+   !borearray[2] = '15mm'
+   !borearray[3] = '20mm'
+   !borearray[4] = '25mm'
+   !borearray[5] = '32mm'
+   !borearray[6] = '40mm'
+   !borearray[7] = '50mm'
+   !borearray[8] = '65mm'
+   !borearray[9] = '80mm'
+   !borearray[10] = '100mm'
+   !borearray[11] = '125mm'
+   !borearray[12] = '150mm'
+   !borearray[13] = '200mm'
+   !borearray[14] = '250mm'   
+   !borearray[15] = '300mm'
+   !borearray[16] = '350mm'
+   !borearray[17] = '400mm'
+   !borearray[18] = '450mm'
+   !borearray[19] = '500mm'
+   !borearray[20] = '550mm'
+   !borearray[21] = '600mm'
+   !borearray[22] = '650mm'
+   !borearray[23] = '700mm'
+   !borearray[24] = '750mm'
+   !borearray[25] = '800mm'
+   !borearray[26] = '850mm'
+   !borearray[27] = '900mm'
+   !borearray[28] = '950mm'
+   !borearray[29] = '1000mm'
+   !borearray[30] = '1100mm'
+   !borearray[31] = '1200mm'
+
+  
+!bore = bore of ce 
+!borestr = !bore.string()
+if (!borestr eq 'Unset') then
+   Wmaximum 1
+else
+   !n = !borearray.find(!borestr)
+   !no = !n[1]
+   Wmaximum $!no
+endif
+
+
+   !optarray[1] = 'unset'
+   !optarray[2] = '/H'
+   !optarray[3] = '/20mm_IASP'
+   !optarray[4] = '/30mm_IASP'
+   !optarray[5] = '/40mm_IASP'
+   !optarray[6] = '/45mm_IASP'
+   !optarray[7] = '/50mm_IASP'
+   !optarray[8] = '/55mm_IASP'
+   !optarray[9] = '/60mm_IASP'
+   !optarray[10] = '/65mm_IASP'       
+   !optarray[11] = '/70mm_IASP'       
+   !optarray[12] = '/75mm_IASP'       
+   !optarray[13] = '/80mm_IASP'       
+   !optarray[14] = '/90mm_IASP'       
+   !optarray[15] = '/100mm_IASP'      
+   !optarray[16] = '/110mm_IASP'      
+   !optarray[17] = '/120mm_IASP'      
+   !optarray[18] = '/130mm_IASP'      
+   !optarray[19] = '/140mm_IASP'      
+   !optarray[20] = '/150mm_IASP'      
+   !optarray[21] = '/160mm_IASP'      
+   !optarray[22] = '/170mm_IASP'      
+   !optarray[23] = '/20mm_IRWP'       
+   !optarray[24] = '/30mm_IRWP'       
+   !optarray[25] = '/35mm_IRWP'       
+   !optarray[26] = '/40mm_IRWP'       
+   !optarray[27] = '/45mm_IRWP'       
+   !optarray[28] = '/50mm_IRWP'       
+   !optarray[29] = '/55mm_IRWP'       
+   !optarray[30] = '/60mm_IRWP'       
+   !optarray[31] = '/65mm_IRWP'       
+   !optarray[32] = '/70mm_IRWP'       
+   !optarray[33] = '/80mm_IRWP'       
+   !optarray[34] = '/90mm_IRWP'       
+   !optarray[35] = '/100mm_IRWP'      
+   !optarray[36] = '/PPINSU'          
+   !optarray[37] = '/20mm_FibreGlass' 
+   !optarray[38] = '/30mm_FibreGlass' 
+   !optarray[39] = '/40mm_FibreGlass' 
+   !optarray[40] = '/50mm_FibreGlass' 
+   !optarray[41] = '/60mm_FibreGlass' 
+   !optarray[42] = '/70mm_FibreGlass' 
+   !optarray[43] = '/80mm_FibreGlass' 
+   !optarray[44] = '/90mm_FibreGlass' 
+   !optarray[45] = '/100mm_FibreGlass'
+   !optarray[46] = '/110mm_FibreGlass'
+   !optarray[47] = '/120mm_FibreGlass'
+   !optarray[48] = '/130mm_FibreGlass'
+   !optarray[49] = '/140mm_FibreGlass'
+   !optarray[50] = '/150mm_FibreGlass'
+   !optarray[51] = '/160mm_FibreGlass'
+   !optarray[52] = '/IRWP'            
+   !optarray[53] = '/IASP'            
+   !optarray[54] = '/IAMP'            
+   !optarray[55] = '/UNSP'            
+   !optarray[56] = '/20mm_IAMP'       
+   !optarray[57] = '/30mm_IAMP'       
+   !optarray[58] = '/35mm_IAMP'       
+   !optarray[59] = '/40mm_IAMP'       
+   !optarray[60] = '/45mm_IAMP'       
+   !optarray[61] = '/50mm_IAMP'       
+   !optarray[62] = '/55mm_IAMP'       
+   !optarray[63] = '/60mm_IAMP'       
+   !optarray[64] = '/65mm_IAMP'       
+   !optarray[65] = '/70mm_IAMP'       
+   !optarray[66] = '/75mm_IAMP'       
+   !optarray[67] = '/80mm_IAMP'       
+   !optarray[68] = '/85mm_IAMP'       
+   !optarray[69] = '/90mm_IAMP'       
+   !optarray[70] = '/100mm_IAMP'      
+   !optarray[71] = '/110mm_IAMP'      
+   !optarray[72] = '/120mm_IAMP'      
+   !optarray[73] = '/130mm_IAMP'      
+   !optarray[74] = '/140mm_IAMP'      
+   !optarray[75] = '/150mm_IAMP'      
+   !optarray[76] = '/20mm_SYGX'       
+   !optarray[77] = '/30mm_SYGX'       
+   !optarray[78] = '/40mm_SYGX'       
+   !optarray[79] = '/50mm_SYGX'       
+   !optarray[80] = '/60mm_SYGX'       
+   !optarray[81] = '/70mm_SYGX'       
+   !optarray[82] = '/80mm_SYGX'       
+   !optarray[83] = '/90mm_SYGX'       
+   !optarray[84] = '/100mm_SYGX'      
+   !optarray[85] = '/110mm_SYGX'      
+   !optarray[86] = '/140mm_SYGX'      
+   !optarray[87] = '/160mm_SYGX'      
+   !optarray[88] = '/170mm_SYGX'      
+   !optarray[89] = '/210mm_SYGX'      
+!ISPEC = ISPEC OF CE
+!ISPECSTR = !ISPEC.STRING()
+if (!ispecstr eq 'Unset') then
+   Pmaximum 1
+else 
+   
+   !ispecname = name of ispec of ce
+   !ispecnamestr = !ispecname.string()
+   !ispecn = !optarray.find(!ispecnamestr)
+   !ispecno = !ispecn[1]
+   HANDLE ANY
+   $p 错误
+   ENDHANDLE
+   Pmaximum $!ispecno
+   HANDLE ANY
+   $p 错误
+   ENDHANDLE
+   
+endif
+
+   !traarray[1] = 'unset'
+   !traarray[2] = '/ST'
+   !traarray[3] = '/TE'
+   !traarray[4] = '/ET'
+   !traarray[5] = '/HT'
+   !traarray[6] = '/1X15'
+   !traarray[7] = '/1X20'
+   !traarray[8] = '/1X25'
+   !traarray[9] = '/2X15'
+   !traarray[10] = '/2X20'
+   !traarray[11] = '/2X25'
+   !traarray[12] = '/3X20'
+   !traarray[13] = '/3X25'
+   !traarray[14] = '/4X20'
+
+!tspec = tspec of ce
+!tspecstr = !tspec.string()
+if (!tspecstr eq 'Unset') then
+   Smaximum 1
+else
+   !tspecname = name of tspec of ce
+   !tspecnamestr = !tspecname.string()
+   !tspecn = !traarray.find(!tspecnamestr)
+   !tspecno =!tspecn[1]
+   Smaximum $!tspecno
+endif
+
+!this.cename.val = fullname
+!this.inputa.val = temp
+!this.inputb.val = :opepressure1
+!this.inputc.val = :destemp
+!this.inputd.val = :despressure
+!this.inputh.val = dscode
+!this.inputi.val = :IsoNumber
+!this.inputj.val = inschedule
+!this.inputk.val = ptspec
+!this.inputl.val = :INSUTYPE&THK
+!this.inputm.val = :QINGXI
+!this.inputn.val = :STRESS
+!this.inputo.val = :CHECK
+!this.inputp.val = :HeatTreat
+
+!this.boreposition.val = Wmaximum
+!this.optposition.val = Pmaximum
+   HANDLE ANY
+   $p 错误
+   ENDHANDLE
+!this.traposition.val = Smaximum
+
+Wmaximum 0
+Pmaximum 0
+Smaximum 0
+
+endmethod
+
+
+
+define method .apply()
+    
+   !boresele = !this.boreposition.selection()
+   
+         bore $!boresele
+   
+
+
+
+
+   !ISPECREF = !this.optposition.selection()
+   
+      VAR !ALLS COLL ALL FOR CE
+       
+      DO !ALL VALUES !ALLS
+         $!ALL 
+         !ISPEC = ISPEC OF CE
+         !ISPECSTR = !ISPEC.STRING()
+      IF (!ISPECSTR EQ '$!ISPECREF' ) THEN
+   
+         skip
+      ELSE
+         ISPEC $!ISPECREF
+      ENDIF
+      ENDDO
+      
+   pipe
+     
+   !TSPECREF = !this.traposition.selection()
+    
+      VAR !ALLS COLL ALL FOR CE
+     
+      DO !ALL VALUES !ALLS
+         $!ALL 
+         !TSPEC = TSPEC OF CE
+         !TSPECSTR = !TSPEC.STRING()
+      IF (!TSPECSTR EQ '$!TSPECREF' ) THEN
+    
+         skip
+      ELSE
+         TSPEC $!TSPECREF
+      ENDIF
+      ENDDO
+
+
+   PIPE
+
+
+   !temp1 = !this.inputa.val
+   !press1 = !this.inputb.val
+   !temp2 = !this.inputc.val
+   !press2 = !this.inputd.val
+   !dnumber1 = !this.inputh.val
+   !dnumber2 = !this.inputi.val
+   !insc = !this.inputj.val
+   !ptsp = !this.inputk.val
+   !insu = !this.inputl.val
+   !qingxi = !this.inputm.val
+   !stress = !this.inputn.val
+   !check = !this.inputo.val
+   !heattreat = !this.inputp.val
+
+
+   VAR !BRANS COLL ALL BRAN FOR CE
+
+   DO !BRAN VALUES !BRANS 
+      $!BRAN
+      !BRANTEMP1=TEMP OF $!BRAN
+      !BRANPRESS1=:opepressure1 OF $!BRAN
+      !BRANTEMP2=:destemp OF $!BRAN
+      !BRANPRESS2=:despressure OF $!BRAN
+$(   IF (!BRANTEMP1 EQ !temp1 ) THEN
+
+      skip
+
+   ELSE
+    
+      TEMP $!temp1 
+
+   ENDIF
+
+   IF (!BRANPRESS1 EQ !press1 ) THEN
+
+      skip
+
+   ELSE
+    
+      :opepressure1 '$!press1' 
+
+   ENDIF
+
+   IF (!BRANTEMP2 EQ !temp2 ) THEN
+
+      skip
+
+   ELSE
+    
+      :destemp '$!temp2' 
+
+   ENDIF
+
+   IF (!BRANPRESS2 EQ !press2 ) THEN
+
+      skip
+
+   ELSE
+    
+      :despressure '$!press2' 
+
+   ENDIF
+$)
+   TEMP $!temp1 
+   :opepressure1 '$!press1'
+   :destemp '$!temp2'
+   :despressure '$!press2'
+
+   enddo
+   
+ 
+   pipe
+   
+   !pipeTEMP1=TEMP OF ce
+   !pipePRESS1=:opepressure1 OF ce
+   !pipeTEMP2=:destemp OF ce
+   !pipePRESS2=:despressure OF ce
+   !pipenumber1=dscode of ce
+   !pipenumber2=:IsoNumber of ce
+   
+
+$(   DO !PIPE VALUES !PIPES
+      $!pipe 
+
+      IF (!pipeTEMP1 EQ !temp1 ) THEN
+
+         skip
+
+      ELSE
+    
+         TEMP $!temp1 
+
+      ENDIF
+
+      IF (!pipePRESS1 EQ !press1 ) THEN
+
+         skip
+
+      ELSE
+    
+         :opepressure1 '$!press1' 
+
+      ENDIF
+
+      IF (!pipeTEMP2 EQ !temp2 ) THEN
+
+         skip
+
+      ELSE
+    
+         :destemp '$!temp2' 
+
+      ENDIF
+
+      IF (!pipePRESS2 EQ !press2 ) THEN
+
+         skip
+
+      ELSE
+    
+         :despressure '$!press2' 
+
+      ENDIF
+
+      IF (!pipenumber1 EQ !dnumber1 ) THEN
+
+         skip
+
+      ELSE
+    
+         dscode '$!dnumber1' 
+
+      ENDIF
+   
+      IF (!pipenumber2 EQ !dnumber2 ) THEN
+
+         skip
+
+      ELSE
+    
+         :IsoNumber '$!dnumber2' 
+
+      ENDIF
+   
+
+   HANDLE ANY
+   ENDHANDLE
+   ENDDO
+$)
+   TEMP $!temp1 
+   :opepressure1 '$!press1'
+   :destemp '$!temp2'
+   :despressure '$!press2'
+   dscode '$!dnumber1'
+   :IsoNumber '$!dnumber2' 
+   inschedule '$!insc'
+   ptspec '$!ptsp'
+   :INSUTYPE&THK '$!insu'
+   :QINGXI '$!qingxi'
+   :STRESS '$!stress'
+   :CHECK '$!check'
+   :HeatTreat '$!heattreat'
+
+endmethod

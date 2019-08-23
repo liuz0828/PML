@@ -1,0 +1,53 @@
+setup form !!addno
+Title '添加分区号'
+paragraph .Message text '请输入分区号'
+text .input width 10 is string $*字符串类型的编辑框
+button .apply '确定' Apply
+exit
+
+Define method .addno() $*缺省构造方法,与Form同名,不带参数
+!this.input.val = '(01)' $*Callback指明响应操作
+!this.apply.callback = '!this.apply()'
+endmethod
+
+
+define method .apply()
+   !no = !this.input.val
+   --$P $!NAME
+   zone
+   
+   VAR !PIPES COLL ALL PIPE FOR CE
+
+   DO !PIPE VALUES !PIPES 
+      $!PIPE
+      !NAME=NAME OF $!PIPE
+   IF (!NAME.MATCH('$!no') GT 0) THEN
+    --!NEWNAME=!NAME.BEFORE('(03)')
+      skip
+   ELSE
+      !NEWNAME=!NAME+'$!no'
+   ENDIF
+      NAME $!NEWNAME
+      HANDLE ANY
+      ENDHANDLE
+   ENDDO
+
+   zone
+
+   VAR !BRANS COLL ALL BRAN FOR CE
+
+   DO !BRAN VALUES !BRANS 
+      $!BRAN
+      !BRANNAME=NAME OF $!BRAN
+   IF (!BRANNAME.MATCH('$!no') GT 0) THEN
+    --!NEWBRANNAME=!BRANNAME+'$!no'
+      skip
+   ELSE
+   !NEWBRANNAME=!BRANNAME.BEFORE('/B') +'$!no' + '/B' +!BRANNAME.AFTER('/B')
+    --!NEWBRANNAME=!BRANNAME+'$!no'
+   ENDIF
+   NAME $!NEWBRANNAME
+   HANDLE ANY
+   ENDHANDLE
+   ENDDO
+endmethod

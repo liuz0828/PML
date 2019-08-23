@@ -1,0 +1,169 @@
+setup form !!ElectromagneticFlowmeter size 25 8
+Title '电磁流量计组件'
+
+	paragraph .MessageA text '请输入仪表名称 '
+	text .InputA  at x0 ymax+0.5 width 10 is string
+	paragraph .MessageB  at x0 ymax+0.5 text '流量计长度 '
+	text .InputB  at x0 ymax+0.5 width 10 is string
+	button .applya '生成' at x0 ymax+1
+	button .cancel '取消' at x15 Cancel
+	!this.InputB.val = '200'
+	
+exit
+
+Define method .ElectromagneticFlowmeter() 
+
+  !this.applya.callback = '!this.applya()'
+
+endmethod
+
+
+Define  method .applya()
+    !Name = !this.InputA.val
+	!Thickness = !this.InputB.val
+	!bspec = name of bspec of pspec of branch of ce 
+	!bspecstr = !bspec.string()
+	!split = !bspecstr.split('-')
+
+	if (!split[1] eq '/CL150') then
+		FOR
+		new FLAN choose with Stype 'F63R'
+		FLIP
+		fconn sel lstu pos  PA DIST 100 FROM PL OF PREV
+		new GASK choose with Stype 'GBD'
+		fconn sel lstu
+		NEW INST sel wi spec /Instrument stype 'FT63'
+		HANDLE ANY
+		ENDHANDLE
+		if (!Name eq '') then
+			if (!Thickness eq '') then
+				mtoc off
+				fconn sel lstu
+				new GASK choose with Stype 'GBD'
+				fconn sel lstu
+				new FLAN choose with Stype 'F63R'
+				fconn sel lstu
+			else
+				Desparam $!Thickness 
+				mtoc off
+				fconn sel lstu
+				new GASK choose with Stype 'GBD'
+				fconn sel lstu
+				new FLAN choose with Stype 'F63R'
+				fconn sel lstu
+			endif 
+		else
+			name /$!Name
+			if (!Thickness eq '') then
+				mtoc off
+				fconn sel lstu
+				new GASK choose with Stype 'GBD'
+				fconn sel lstu
+				new FLAN choose with Stype 'F63R'
+				fconn sel lstu
+			else
+				Desparam $!Thickness 
+				mtoc off
+				fconn sel lstu
+				new GASK choose with Stype 'GBD'
+				fconn sel lstu
+				new FLAN choose with Stype 'F63R'
+				fconn sel lstu
+			endif 
+		endif
+	elseif (!split[1] eq '/CL300') then
+		FOR
+		new FLAN choose with Stype 'F63R'
+		FLIP
+		fconn sel lstu pos  PA DIST 100 FROM PL OF PREV
+		new GASK choose with Stype 'GBD'
+		fconn sel lstu
+		NEW INST sel wi spec /Instrument stype 'FT63'
+		HANDLE ANY
+		ENDHANDLE
+		if (!Name eq '') then
+			if (!Thickness eq '') then
+				mtoc off
+				fconn sel lstu
+				new GASK choose with Stype 'GBD'
+				fconn sel lstu
+				new FLAN choose with Stype 'F63R'
+				fconn sel lstu
+			else
+				Desparam $!Thickness 
+				mtoc off
+				fconn sel lstu
+				new GASK choose with Stype 'GBD'
+				fconn sel lstu
+				new FLAN choose with Stype 'F63R'
+				fconn sel lstu
+			endif 
+		else
+			name /$!Name
+			if (!Thickness eq '') then
+				mtoc off
+				fconn sel lstu
+				new GASK choose with Stype 'GBD'
+				fconn sel lstu
+				new FLAN choose with Stype 'F63R'
+				fconn sel lstu
+			else
+				Desparam $!Thickness 
+				mtoc off
+				fconn sel lstu
+				new GASK choose with Stype 'GBD'
+				fconn sel lstu
+				new FLAN choose with Stype 'F63R'
+				fconn sel lstu
+			endif 
+		endif
+	else
+		FOR
+		new FLAN choose with Stype 'F66R'
+		FLIP
+		fconn sel lstu pos  PA DIST 100 FROM PL OF PREV
+		new GASK choose with Stype 'GBF'
+		fconn sel lstu
+		NEW INST sel wi spec /Instrument stype 'FT66'
+		HANDLE ANY
+		ENDHANDLE
+		if (!Name eq '') then
+			if (!Thickness eq '') then
+				mtoc off
+				fconn sel lstu
+				new GASK choose with Stype 'GBF'
+				fconn sel lstu
+				new FLAN choose with Stype 'F66R'
+				fconn sel lstu
+			else
+				Desparam $!Thickness 
+				mtoc off
+				fconn sel lstu
+				new GASK choose with Stype 'GBF'
+				fconn sel lstu
+				new FLAN choose with Stype 'F66R'
+				fconn sel lstu
+			endif 
+		else
+			name /$!Name
+			if (!Thickness eq '') then
+				mtoc off
+				fconn sel lstu
+				new GASK choose with Stype 'GBF'
+				fconn sel lstu
+				new FLAN choose with Stype 'F66R'
+				fconn sel lstu
+			else
+				Desparam $!Thickness 
+				mtoc off
+				fconn sel lstu
+				new GASK choose with Stype 'GBF'
+				fconn sel lstu
+				new FLAN choose with Stype 'F66R'
+				fconn sel lstu
+			endif 
+		endif
+	endif
+endmethod
+
+	

@@ -1,0 +1,355 @@
+------------------------------------------------------------------------
+--
+-- (c) Copyright  2004 to Current Year  AVEVA Solutions Limited
+--
+-- File:            pipetools.pmlobj
+--   Type:          Object Definition
+--   Group:         Application Switching
+--     Keyword:     APP
+--   Module:        design
+--   Replaces:
+--
+-- Author:          Michael Wang
+-- Created:         Thu July 29 23:30:00 2005
+--
+-- Last modified by $Author: jamie.brunning $ on $Date: 2004/02/25 14:16:18 $
+--                  $Revision: 1.1 $
+--
+-- Description:     Object for Access Stairs & Ladders application
+--
+------------------------------------------------------------------------
+-- Methods defined:
+--
+--  Method call                     Return              Description
+--  ===========                     ======              ===========
+--  modifyForm()                    -                   Makes modifications to the main form
+--  barMenu()                       -                   Adds options to the bar menu for this application
+--  displayMenu()                   -                   Adds options to the Display menu
+--  graphMenu()                     -                   Adds options to the Graphics menu
+--  queryMenu()                     -                   Adds options to the Query menu
+--  settingsMenu()                  -                   Adds options to the Settings menu
+--  utilsMenu()                     -                   Adds options to the Utilities menu
+--  createMenu()                    -                   Adds options to the Create menu
+--  modifyMenu()                    -                   Adds options to the Modify menu
+--  deleteMenu()                    -                   Adds options to the Delete menu
+--  toolbars()                      -                   Creates toolbars for this application
+--  menus()                         -                   Creates menus for this application
+--  modifyMenus()                   -                   Runs all other menu creation methods
+--
+------------------------------------------------------------------------
+define object ZESTCtools
+  -- object definition left blank
+endobject
+-- End of object definition for APPACCESS
+
+------------------------------------------------------------------------
+--
+-- Method:      .modifyForm()
+--
+-- Description: Makes modifications to the main form
+--
+-- Method Type: Procedure
+-- Arguments:
+--   [#] [R/RW] [Data Type] [Description]
+-- Return:
+--   [Data Type] [Description]
+--
+------------------------------------------------------------------------
+define method .modifyForm()
+  !this.toolbars()
+endmethod
+-- End of method definition for .modifyForm() 
+
+------------------------------------------------------------------------
+--
+-- Method:      .barMenu()
+--
+-- Description: Adds options to the bar menu for this application
+--
+-- Method Type: Procedure
+-- Arguments:
+--   [#] [R/RW] [Data Type] [Description]
+-- Return:
+--   [Data Type] [Description]
+--
+------------------------------------------------------------------------
+define method .barMenu()
+
+  !bmenu = object APPBARMENU()
+  !bmenu.add(|ZESTCTools|, 'ZESTCTools')
+  !!appMenuCntrl.addBarMenu(!bmenu, 'GEN') 
+  !!appMenuCntrl.addBarMenu(!bmenu, 'PIPE') 
+  !!appMenuCntrl.addBarMenu(!bmenu, 'EQUI')   
+endmethod
+-- End of method definition for .barMenu() 
+
+------------------------------------------------------------------------
+--
+-- Method:      .displayMenu()
+--
+-- Description: Adds options to the Display menu
+--
+-- Method Type: Procedure
+-- Arguments:
+--   [#] [R/RW] [Data Type] [Description]
+-- Return:
+--   [Data Type] [Description]
+--
+------------------------------------------------------------------------
+define method .displayMenu()
+  -- !menu = object APPMENU('sysView')
+  -- !!appMenuCntrl.addMenu(!menu, 'PIPE')
+endmethod
+-- End of method definition for .displayMenu() 
+
+------------------------------------------------------------------------
+--
+-- Method:      .graphMenu()
+--
+-- Description: Adds options to the Graphics menu
+--
+-- Method Type: Procedure
+-- Arguments:
+--   [#] [R/RW] [Data Type] [Description]
+-- Return:
+--   [Data Type] [Description]
+--
+------------------------------------------------------------------------
+define method .graphMenu()
+  -- !menu = object APPMENU('sysGph')
+  -- !!appMenuCntrl.addMenu(!menu, 'PIPE')
+endmethod
+-- End of method definition for .graphMenu() 
+
+------------------------------------------------------------------------
+--
+-- Method:      .queryMenu()
+--
+-- Description: Adds options to the Query menu
+--
+-- Method Type: Procedure
+-- Arguments:
+--   [#] [R/RW] [Data Type] [Description]
+-- Return:
+--   [Data Type] [Description]
+--
+------------------------------------------------------------------------
+define method .queryMenu()
+  -- !menu = object APPMENU('sysQry')
+  -- !!appMenuCntrl.addMenu(!menu, 'PIPE')
+endmethod
+-- End of method definition for .queryMenu() 
+
+------------------------------------------------------------------------
+--
+-- Method:      .settingsMenu()
+--
+-- Description: Adds options to the Settings menu
+--
+-- Method Type: Procedure
+-- Arguments:
+--   [#] [R/RW] [Data Type] [Description]
+-- Return:
+--   [Data Type] [Description]
+--
+------------------------------------------------------------------------
+define method .settingsMenu()
+--  !menu = object APPMENU('sysSet')
+--  !menu.add('SEPARATOR')
+--  !menu.add('FORM', |Storage Areas...|, |aslStorageAreas|, 'accessStorageAreas')
+--  !menu.add('FORM', |Defaults...|, 'CDACCEDEF', 'accessDefaults')
+--  !!appMenuCntrl.addMenu(!menu, 'PIPE')
+endmethod
+-- End of method definition for .settingsMenu() 
+
+------------------------------------------------------------------------
+--
+-- Method:      .utilsMenu()
+--
+-- Description: Adds options to the Utilities menu
+--
+-- Method Type: Procedure
+-- Arguments:
+--   [#] [R/RW] [Data Type] [Description]
+-- Return:
+--   [Data Type] [Description]
+--
+------------------------------------------------------------------------
+define method .utilsMenu()
+--  !menu = object APPMENU('sysUtil')
+--  !menu.add('CALLBACK', 'ASL Modeller...', |CALLG XUTILITIES $$<ASL Modeller$$> $$<ACCESS$$> $$<DES$$>|, 'ASLModellerUtil')
+--  !menu.add('SEPARATOR')
+--  !menu.add('CALLBACK', |Check Post Pitch|, |CALLAC MCHECKPP|, 'CheckPostPitch')
+--  !!appMenuCntrl.addMenu(!menu, 'PIPE')
+endmethod
+-- End of method definition for .utilsMenu() 
+
+------------------------------------------------------------------------
+--
+-- Method:      .createMenu()
+--
+-- Description: Adds options to the Create menu
+--
+-- Method Type: Procedure
+-- Arguments:
+--   [#] [R/RW] [Data Type] [Description]
+-- Return:
+--   [Data Type] [Description]
+--
+------------------------------------------------------------------------
+define method .createMenu()
+--  !menu = object APPMENU('sysCrt')
+--  !menu.add('SEPARATOR')
+--  !menu.add('CALLBACK', |Structure...|, |CALLG XCRTPURP STRU $$<Create Structure$$>|, 'Structure')
+--  !menu.insertAfter('Structure', 'CALLBACK', |SubStructure...|, |CALLG XCRTPURP SUBS $$<Create SubStructure$$>|, 'SubStructure')
+--  !menu.insertAfter('SubStructure', 'FORM', |Primitives...|, 'CDPRIMA', 'accessPrimitives')
+--  !menu.add('SEPARATOR')
+--  !menu.add('MENU', |Platform|, 'PLATFORM', 'accessPlatform')
+--  !menu.add('MENU', |Stair|, 'STAIR', 'accessStair')
+--  !menu.add('MENU', |Ladder|, 'LADDER', 'accessLadder')
+--  !menu.add('MENU', |Floor Penetration|, 'FLOORP', 'accessFloorPenetration')
+--  !menu.add('MENU', |Post|, 'POSTS', 'accessPost')
+--  !menu.add('MENU', |Corner Posts|, 'CPOSTS', 'accessCornerPosts')
+--  !menu.add('MENU', |Handrail|, 'RAILS', 'accessHandrail')
+--  !menu.add('MENU', |Kickplate|, 'KICKP', 'accessKickplate')
+--  !menu.add('MENU', |Post Joints|, 'PJOINTS', 'accessPostJoints')
+--  
+--  
+--  !!appMenuCntrl.addMenu(!menu, 'PIPE')
+endmethod
+-- End of method definition for .createMenu() 
+
+------------------------------------------------------------------------
+--
+-- Method:      .modifyMenu()
+--
+-- Description: Adds options to the Modify menu
+--
+-- Method Type: Procedure
+-- Arguments:
+--   [#] [R/RW] [Data Type] [Description]
+-- Return:
+--   [Data Type] [Description]
+--
+------------------------------------------------------------------------
+define method .modifyMenu()
+--!menu = object APPMENU('sysMod')
+--!menu.add('SEPARATOR')
+--!menu.add('FORM', |Representation...|, 'CDREPSET', 'Representation')
+--!menu.add('MENU', |Stretch/Trim|, 'STRETCH', 'StretchTrim')
+--!menu.add('MENU', |Slide|, 'SLIDE', 'Slide')
+--!menu.add('SEPARATOR')
+--!menu.add('MENU', |Origin|, 'MODORI', 'accessOrigin')
+--!menu.add('MENU', |Stair Top Joint|, 'SJOINT', 'accessStairTopJoint')
+--!!appMenuCntrl.addMenu(!menu, 'PIPE')
+endmethod
+-- End of method definition for .modifyMenu() 
+
+------------------------------------------------------------------------
+--
+-- Method:      .deleteMenu()
+--
+-- Description: Adds options to the Delete menu
+--
+-- Method Type: Procedure
+-- Arguments:
+--   [#] [R/RW] [Data Type] [Description]
+-- Return:
+--   [Data Type] [Description]
+--
+------------------------------------------------------------------------
+define method .deleteMenu()
+  -- !menu = object APPMENU('sysDel')
+  -- !!appMenuCntrl.addMenu(!menu, 'PIPE')
+endmethod
+-- End of method definition for .deleteMenu() 
+------------------------------------------------------------------------
+--
+-- Method:      .menus()
+--
+-- Description: Creates menus for this application
+--
+-- Method Type: Procedure
+-- Arguments:
+--   [#] [R/RW] [Data Type] [Description]
+-- Return:
+--   [Data Type] [Description]
+--
+------------------------------------------------------------------------
+define method .menus()
+  !menu = object APPMENU('ZESTCTools')
+  !menu.add('CALLBACK', |管道标注距离|, '!!aidistance()')
+  !menu.add('CALLBACK', |管道标注角度|, '!!aidangle()')
+  !menu.add('CALLBACK', |管口标注距离|, '!!nozzdistance()')
+  !menu.add('CALLBACK', |管口标注角度|, '!!nozzangle()')
+  !menu.add('FORM', |添加元素进视图|, 'addzone')
+  --!menu.add('CALLBACK', |清除标注|, 'aid clear text all')
+  --!menu.add('CALLBACK', |查询材料描述|, '!!aiddetail()')
+  !menu.add('FORM', |管道添加分区号|, 'addno')  
+  !menu.add('FORM', |修改管道属性|, 'addtemp') 
+  !menu.add('FORM', |排放组件|, 'drain') 
+  !menu.add('MENU', |仪表组件|, 'InstrumentAssembly')
+  !menu.add('FORM', |刷管线号|, 'pidno')
+  !menu.add('FORM', |查询管道数量|, 'CountPipes') 
+  !!appMenuCntrl.addMenu(!menu, 'GEN') 
+  !!appMenuCntrl.addMenu(!menu, 'EQUI')            
+  !!appMenuCntrl.addMenu(!menu, 'PIPE')   
+
+  !menu = object APPMENU('InstrumentAssembly')
+  !menu.add('FORM', |管线上温度计组件|, 'Thermometer') 
+  !menu.add('FORM', |管线上压力表组件|, 'PressureGage') 
+  !menu.add('FORM', |设备上温度计组件|, 'ThermometerOnEqui') 
+  !menu.add('FORM', |设备上压力表组件|, 'PressureGageOnEqui') 
+  !menu.add('FORM', |液位计组件|, 'LevelGage') 
+  !menu.add('FORM', |限流孔板组件|, 'RestrictionOrifice')
+  !menu.add('FORM', |电磁流量计组件|, 'ElectromagneticFlowmeter')
+  !!appMenuCntrl.addMenu(!menu, 'GEN')  
+  !!appMenuCntrl.addMenu(!menu, 'EQUI')    
+  !!appMenuCntrl.addMenu(!menu, 'PIPE')    
+  
+endmethod
+-- End of method definition for .menus() 
+
+------------------------------------------------------------------------
+--
+-- Method:      .toolbars()
+--
+-- Description: Creates toolbars for this application
+--
+-- Method Type: Procedure
+-- Arguments:
+--   [#] [R/RW] [Data Type] [Description]
+-- Return:
+--   [Data Type] [Description]
+--
+------------------------------------------------------------------------
+define method .toolbars()
+
+endmethod
+-- End of method definition for .toolbars()
+------------------------------------------------------------------------
+--
+-- Method:      .modifyMenus()
+--
+-- Description: Runs all other menu creation methods
+--
+-- Method Type: Procedure
+-- Arguments:
+--   [#] [R/RW] [Data Type] [Description]
+-- Return:
+--   [Data Type] [Description]
+--
+------------------------------------------------------------------------
+define method .modifyMenus()
+  !this.barMenu()
+  !this.displayMenu()
+  !this.graphMenu()
+  !this.queryMenu()
+  !this.settingsMenu()
+  !this.utilsMenu()
+  !this.createMenu()
+  !this.modifyMenu()
+  !this.deleteMenu()
+  !this.menus()
+endmethod
+-- End of method definition for .modifyMenus()n

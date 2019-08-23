@@ -1,0 +1,42 @@
+setup form !!CountPipes
+Title '查询管道数量'
+--paragraph .Message text '  请输入  '
+--text .input '  请输入  ' width 10 is string $*字符串类型的编辑框
+--button .apply '添加进视图' Apply
+--exit
+
+button .ce 'CE '
+paragraph .cename text 'No name' width 25 height 1
+paragraph .PipesQuantity at x1 ymax+0.5 text ' ' width 25 height 1
+button .apply at x0 ymax+0.5 '查询' Apply 
+button .cancel '取消' at x22 Cancel
+exit
+
+
+Define method .CountPipes() $*缺省构造方法,与Form同名,不带参数
+	
+	!this.ce.callback = '!this.ce()'
+	!this.apply.callback = '!this.apply()'
+
+endmethod
+
+--Define method .doinput() $*响应操作,’.’前面加空格
+--!this.add.callback = !this.input.val $*!this = !!hello, val 表示value
+--endmethod
+
+Define method .ce()
+
+	!this.cename.val = fullname
+
+endmethod
+
+Define method .apply()
+	VAR !PIPES COLL ALL PIPE FOR CE
+	!number=!pipes.size() 
+	!this.PipesQuantity.val = '管线数量为$!number'
+
+endmethod
+
+--var !zoness coll all zone with match(name of zone, '2416-ML') neq 0 for world 
+--!zones.appendarray(!zoness)
+

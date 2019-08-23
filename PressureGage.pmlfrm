@@ -1,0 +1,41 @@
+setup form !!PressureGage size 25 5
+Title '管线上压力表组件'
+
+	paragraph .Message text '请输入仪表名称 '
+	text .input  at x0 ymax+0.5 width 10 is string
+	button .applya '选择三通件' at x0 ymax+1
+
+exit
+
+Define method .PressureGage() 
+
+	!this.applya.callback = '!this.applya()'
+
+endmethod
+
+
+Define  method .applya()
+    !name = !this.input.val
+	new bran 
+	conn ph to id@
+	for
+	choose autoconnect on
+	new VALV choose with Stype '1C09'
+	HANDLE ANY
+	ENDHANDLE
+	Fconn sel lstu  pos pa dist 100 from ph 
+	NEW INST sel wi spec /Instrument stype 'TPBW'
+	mtoc off
+	if (!name eq '') then
+		fconn
+		bran 
+		conn pt to last mem
+	else
+		name /$!name
+		fconn
+		bran 
+		conn pt to last mem
+	endif
+endmethod
+
+	

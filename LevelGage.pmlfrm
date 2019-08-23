@@ -1,0 +1,73 @@
+Setup Form !!Levelgage Size 25 5
+Title '液位计组件'
+
+	paragraph .Message text '请输入仪表管线号 '
+	text .input  at x0 ymax+0.5 width 25 is string
+	button .applya '选择液位计两个管口' at x0 ymax+1
+	
+exit
+
+Define method .LevelGage() 
+
+  !this.applya.callback = '!this.applya()'
+
+endmethod
+
+
+Define  method .applya()
+	!Name = !this.input.val
+	!Split = !Name.Split('-')
+	New Pipe /$!Name
+	Pspec /$!Split[5]
+	New Branch /$!Name/B1
+	conn ph to id@
+	conn pt to id@
+	for
+	choose autoconnect on
+	!Hconn = hconn of ce
+	!Hpos = hpos of ce
+	!HposU = !Hpos.UP
+	!Tpos = tpos of ce
+	!TposU = !Tpos.UP
+	!Lenght = !HposU - !TposU
+	if (!Hconn eq 'FBB') then
+		new GASK choose with Stype 'GBB'
+		new VALV choose with Stype '1C02'
+		new GASK choose with Stype 'GBB'
+		NEW INST sel wi spec /Instrument stype '4D22'
+		mtoc off
+		Name /$!Split[1]-$!Split[3]-$!Split[4]
+		Desparam $!Lenght 150 150 150 
+		fconn
+		new GASK choose with Stype 'GBB'
+		new VALV choose with Stype '1C02'
+		new GASK choose with Stype 'GBB'
+		bran 
+	elseif (!Hconn eq 'FBD') then
+		new GASK choose with Stype 'GBD'
+		new VALV choose with Stype '1C03'
+		new GASK choose with Stype 'GBD'
+		NEW INST sel wi spec /Instrument stype '4D23'
+		mtoc off
+		Name /$!Split[1]-$!Split[3]-$!Split[4]
+		Desparam $!Lenght 150 150 150 
+		fconn
+		new GASK choose with Stype 'GBD'
+		new VALV choose with Stype '1C03'
+		new GASK choose with Stype 'GBD'
+		bran 
+	else
+		new GASK choose with Stype 'GBF'
+		new VALV choose with Stype '1C06'
+		new GASK choose with Stype 'GBF'
+		NEW INST sel wi spec /Instrument stype '4D24'
+		mtoc off
+		Name /$!Split[1]-$!Split[3]-$!Split[4]
+		Desparam $!Lenght 150 150 150 
+		fconn
+		new GASK choose with Stype 'GBF'
+		new VALV choose with Stype '1C06'
+		new GASK choose with Stype 'GBF'
+		bran 
+	endif
+endmethod

@@ -1,0 +1,51 @@
+setup form !!ThermometerOnEqui size 25 5
+Title '设备上温度计组件'
+
+	paragraph .Message text '请输入仪表管线号 '
+	text .input  at x0 ymax+0.5 width 25 is string
+	button .applya '选择管口' at x0 ymax+1
+
+exit
+
+Define method .ThermometerOnEqui() 
+
+  !this.applya.callback = '!this.applya()'
+
+endmethod
+
+
+Define  method .applya()
+    !Name = !this.input.val
+	!Split = !Name.Split('-')
+	New Pipe /$!Name
+	Pspec /$!Split[5]
+	New Branch /$!Name/B1
+	conn ph to id@
+	for
+	choose autoconnect on
+	!Hconn = hconn of ce
+	if (!Hconn eq 'FBB') then
+		NEW INST sel wi spec /Instrument stype 'TP62'
+		mtoc off
+		Name /$!Split[1]-$!Split[3]-$!Split[4]
+		fconn
+		bran 
+		conn pt to last mem
+	elseif (!Hconn eq 'FBD') then
+		NEW INST sel wi spec /Instrument stype 'TP63'
+		mtoc off
+		Name /$!Split[1]-$!Split[3]-$!Split[4]
+		fconn
+		bran 
+		conn pt to last mem
+	else
+		NEW INST sel wi spec /Instrument stype 'TP66'
+		mtoc off
+		Name /$!Split[1]-$!Split[3]-$!Split[4]
+		fconn
+		bran 
+		conn pt to last mem
+	endif
+	
+endmethod
+

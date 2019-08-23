@@ -1,0 +1,92 @@
+$(H
+
+------------------------------------------------------------------------
+--Copyright(c) AVEVA Ltd 2008
+--However,AVEVA shall be under no obligation to provide technical support or enhancement on this tool.
+
+Macro:   FUNN.PMLFRM                   
+Revision: 1.0 
+Author:  MICHAEL WANG 
+
+First edited on: 2004/1/5 11:00
+Last modified on: 2004/1/5 15:48:00 
+
+Macro Generic Type: Form Definitions
+
+------------------------------------------------------------------------
+$)
+kill !!opFUNNel
+
+SETUP FORM !!opFUNNel
+   TITLE 'New funnel'
+   button .ce 'Pick Branch' at x0.5 ymax + 0.3
+   path right
+   para .branname width 30
+   text .pipename 'Pipe name' at x0.5 ymax width 35 is string
+   option .spec   'Pipe spec' at x0.5 ymax + 0.1 width 10
+   text .diam     'Diameter ' at x0.5 ymax width 10 is string
+   text .dist     'Distance ' at x0.5 ymax width 10 is string
+   
+   button .apply 'Apply' at x0.5 ymax + 0.3  
+   path right
+   button .help ' Help ' at x20 
+   button .cancel at XMAX FORM-SIZE 'Cancel' cancel
+exit
+
+define method .opfunnel()
+   !this.dist.val = '100'
+   !this.diam.val = '80'
+   !this.help.callback = |!!alert.message('Funnel STYPE=FUNN.')|
+   !this.ce.callback = '!this.ce()'
+   !this.apply.callback = '!this.apply()'  
+   
+   !dtext = array()
+   var !specs coll all spec with (purp eq 'PIPI') 
+   var !names eval name for ALL from !specs  
+   do !name value !names
+      var !spcos coll all spco for $!name
+      do !spco value !spcos
+         if(tans of $!spco eq 'FUNN') then
+            !dtext.append('$!name')
+            break
+         endif
+      enddo      
+   enddo
+   !this.spec.dtext = !dtext 
+endmethod
+
+define method .ce()
+ID BRAN @
+!this.branname.val = name
+!pipename = name of pipe
+!pipename = !pipename.before('(') + '-FUNNEL' + '(' + !pipename.after('(') 
+!this.pipename.val = !pipename
+endmethod
+
+define method .apply()
+!upbran = !this.branname.val
+!dist = !this.dist.val
+!TPOS = TPOS of $!upbran
+!TPOS.UP = !TPOS.UP - $!dist
+
+!pipename = !this.pipename.val
+!pspec = !this.spec.selection()
+!hbore = !this.diam.val
+
+NEW PIPE $!pipename
+pspe $!pspec
+NEW BRAN $!pipename/B1
+HPOS $!TPOS
+HBOR $!hbore
+HDIR D
+HCONN OPEN
+NEW PCOM CHOOSE with stype FUNN
+ARRI 2
+LEA 1
+CONN
+
+branch
+conn pt to last mem
+!TPOS.UP = !TPOS.UP - 1000
+tpos $!tpos
+endmethod

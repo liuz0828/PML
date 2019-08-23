@@ -1,0 +1,55 @@
+setup form !!drain size 45 10
+Title '排放组件'
+--paragraph .Message text '  请输入  '
+--text .input '  请输入  ' width 10 is string $*字符串类型的编辑框
+--button .apply '添加进视图' Apply
+
+    !icona             = !!pml.getPathname('draintypea.png')
+    button .draintypea tooltip '排放形式A' pixmap /$!icona at x0 y0 
+
+    !iconb             = !!pml.getPathname('draintypeb.png')
+    button .draintypeb tooltip '排放形式B' pixmap /$!iconb at x15 y0   
+    
+    !iconc             = !!pml.getPathname('draintypec.png')
+    button .draintypec tooltip '排放形式C' pixmap /$!iconc at x30 y0 
+   
+    !icond             = !!pml.getPathname('draintyped.png')
+    button .draintyped tooltip '排放形式D' pixmap /$!icond at x0 y5 
+
+    !icone             = !!pml.getPathname('draintypee.png')
+    button .draintypee tooltip '排放形式E' pixmap /$!icone at x15 y5
+	
+    !iconf             = !!pml.getPathname('draintypef.png')
+    button .draintypef tooltip '排放形式F' pixmap /$!iconf at x30 y5
+exit
+
+Define method .drain() $*缺省构造方法,与Form同名,不带参数
+--!this.input.val = '2416-P' $*Callback指明响应操作
+!this.draintypea.callback = 'show !!draintypea'
+!this.draintypeb.callback = 'show !!draintypeb'
+!this.draintypec.callback = 'show !!draintypec'
+!this.draintyped.callback = 'show !!draintyped'
+!this.draintypee.callback = 'show !!draintypee'
+!this.draintypef.callback = 'show !!draintypef'
+endmethod
+
+
+--Define method .doinput() $*响应操作,’.’前面加空格
+--!this.add.callback = !this.input.val $*!this = !!hello, val 表示value
+--endmethod
+
+define method .apply()
+   !name = !this.input.val
+   --$P $!NAME
+   var !zones coll all with match(name , '$!name') neq 0 for world 
+   --q var !zones
+   
+   Var !Names Eval name for all from !zones
+   do !zone values !zones
+      add $!zone
+   enddo
+
+endmethod
+
+--var !zoness coll all zone with match(name of zone, '2416-ML') neq 0 for world 
+--!zones.appendarray(!zoness)

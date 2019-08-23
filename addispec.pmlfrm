@@ -1,0 +1,121 @@
+setup form !!addISPEC
+Title '修改保温等级'
+--paragraph .Message text '  请输入保温等级  '
+
+--text .input  at x0 ymax width 10 is string $*字符串类型的编辑框
+
+option .optPosition '  请选择保温等级   ' width 10
+button .applya '确定' Apply
+option .traPosition '  请选择伴热等级   ' at x0 y1.5 width 10
+button .applyb '确定' Apply
+exit
+
+Define method .addispec() $*缺省构造方法,与Form同名,不带参数
+   
+   --!this.input.val = '(01)' $*Callback指明响应操作
+   !this.applya.callback = '!this.applya()'
+   !optarray[1] = '/H'
+   !optarray[2] = '/20mm_AlSiO3'
+   !optarray[3] = '/30mm_AlSiO3'
+   !optarray[4] = '/40mm_AlSiO3'
+   !optarray[5] = '/50mm_AlSiO3'
+   !optarray[6] = '/60mm_AlSiO3'
+   !optarray[7] = '/70mm_AlSiO3'
+   !optarray[8] = '/80mm_AlSiO3'
+   !optarray[9] = '/90mm_AlSiO3'
+   !optarray[10] = '/100mm_AlSiO3'
+   !optarray[11] = '/110mm_AlSiO3'
+   !optarray[12] = '/120mm_AlSiO3'
+   !optarray[13] = '/20mm_Rockwool'
+   !optarray[14] = '/30mm_Rockwool'
+   !optarray[15] = '/40mm_Rockwool'
+   !optarray[16] = '/50mm_Rockwool'
+   !optarray[17] = '/60mm_Rockwool'
+   !optarray[18] = '/70mm_Rockwool'
+   !optarray[19] = '/80mm_Rockwool'
+   !optarray[20] = '/90mm_Rockwool'
+   !optarray[21] = '/100mm_Rockwool'
+   !optarray[22] = 'unset'
+  
+   !this.optposition.dtext = !optarray
+
+!this.applyb.callback = '!this.applyb()'
+   !traarray[1] = '/ST'
+   !traarray[2] = '/1X15'
+   !traarray[3] = '/1X20'
+   !traarray[4] = '/1X25'
+   !traarray[5] = '/2X15'
+   !traarray[6] = '/2X20'
+   !traarray[7] = '/2X25'
+   !traarray[8] = '/3X20'
+   !traarray[9] = '/3X25'
+   !traarray[10] = 'unset'
+  
+  
+   !this.traposition.dtext = !traarray
+
+endmethod
+
+
+define method .applya()
+   !ISPECREF = !this.optposition.selection()
+   --$P $!NAME
+   --VAR !PIPES COLL ALL PIPE FOR CE
+
+   --DO !PIPE VALUES !PIPES 
+      --$!PIPE
+
+      VAR !ALLS COLL ALL FOR CE
+      --!NAME=NAME OF $!PIPE
+      DO !ALL VALUES !ALLS
+         $!ALL 
+         !ISPEC = ISPEC OF CE
+         !ISPECSTR = !ISPEC.STRING()
+      IF (!ISPECSTR EQ '$!ISPECREF' ) THEN
+      --IF (!ISPEC EQ '/H' ) THEN
+    --!NEWNAME=!NAME.BEFORE('(03)')
+         skip
+      ELSE
+         ISPEC $!ISPECREF
+      ENDIF
+      ENDDO
+      --NAME $!NEWNAME
+      HANDLE ANY
+      ENDHANDLE
+      PIPE
+
+endmethod
+
+define method .applyb()
+   !TSPECREF = !this.traposition.selection()
+   --$P $!NAME
+   --VAR !PIPES COLL ALL PIPE FOR CE
+
+   --DO !PIPE VALUES !PIPES 
+      --$!PIPE
+
+      VAR !ALLS COLL ALL FOR CE
+      --!NAME=NAME OF $!PIPE
+      DO !ALL VALUES !ALLS
+         $!ALL 
+         !TSPEC = TSPEC OF CE
+         !TSPECSTR = !TSPEC.STRING()
+      IF (!TSPECSTR EQ '$!TSPECREF' ) THEN
+      --IF (!ISPEC EQ '/H' ) THEN
+    --!NEWNAME=!NAME.BEFORE('(03)')
+         skip
+      ELSE
+         TSPEC $!TSPECREF
+      ENDIF
+      ENDDO
+      --NAME $!NEWNAME
+      HANDLE ANY
+      ENDHANDLE
+      PIPE
+
+endmethod
+
+
+ 
+
+

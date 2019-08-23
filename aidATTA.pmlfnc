@@ -1,0 +1,11 @@
+define function !!aidATTA()
+AID CLEAR TEXT ALL
+Var !ATTAs Coll All ATTA FOR CE
+
+DO !ATTA VALUE !ATTAs
+   !POS = POS OF $!ATTA WRT WORLD
+   !RTEXT = STEXT OF $!ATTA
+   AID TEXT NUMBER 100 '$!RTEXT' AT $!POS
+   --$p $!RTEXT
+ENDDO
+endfunction

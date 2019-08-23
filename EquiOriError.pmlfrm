@@ -1,0 +1,58 @@
+setup form !!EquiOriError size 20 10
+Title '设备方向检查'
+
+button .ce 'CE '
+paragraph .cename text 'No name' width 25 height 1
+List.ErrorList  at x0 ymax width 20 height 15
+paragraph .ceori at x0 ymax width 20 height 5
+exit
+
+Define method .EquiOriError()
+	
+	!this.ce.callback = '!this.ce()'
+
+	!this.ErrorList.callback = '!this.ErrorList()'
+
+endmethod
+
+Define method .ce()
+
+	!this.cename.val = fullname
+	!This.ErrorList.SetHeadings('错误列表')
+	VAR !Equis COLL ALL EQUI FOR CE
+
+	!ErrorList = ARRAY()
+
+	DO !Equi VALUES !Equis 
+		
+		!EquiName = name of $!Equi
+		!ORI = ORI of $!Equi WRT WORLD
+		
+		IF(!ORI.STRING().MATCH('Y is N') GT 0 ) THEN  
+              
+			skip
+			
+		else
+		
+			!ErrorList.append('$!EquiName')
+			
+		endif
+
+	ENDDO
+	
+	!This.ErrorList.Dtext= !ErrorList
+	!NagativeEqui = !This.ErrorList.selection()
+	$!NagativeEqui 
+endmethod
+
+Define method .ErrorList()
+	
+	
+	!NagativeEqui = !This.ErrorList.selection()
+	$!NagativeEqui 
+	!EquiOri = ORI OF $!NagativeEqui 
+	!this.ceori.val = '方向为 $!EquiOri '
+	
+endmethod
+
+

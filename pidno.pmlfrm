@@ -1,0 +1,292 @@
+setup form !!pidno
+Title '刷管线号'
+--paragraph .Message text '  请输入  '
+--text .input '  请输入  ' width 10 is string $*字符串类型的编辑框
+--button .apply '添加进视图' Apply
+--exit
+
+button .ce 'CE '
+paragraph .cename text 'No name' width 25 height 1
+paragraph .Message at x0 ymax+0.5 text '请定义管线图号和图纸号是由管线号中的哪几段组合而成'
+Text.PIDNO at x0 ymax+0.5 width 6 is string
+Text.PIDNoPart1 at x8 width 5 is string
+paragraph.Dash1 at x15 text '-' width 1
+Text.PIDNoPart2 at x17 width 5 is string
+paragraph.Dash2 at x24 text '-' width 1
+Text.PIDNoPart3 at x26width 5 is string
+paragraph.Dash3 at x33 text '-' width 1
+Text.PIDNoPart4 at x35 width 5 is string
+toggle .SiteNo1 '（分区号）' at x42 
+Text.ISONO at x0 ymax+0.5 width 6 is string
+Text.ISONoPart1 at x8 width 5 is string
+paragraph.Dash4 at x15 text '-' width 1
+Text.ISONoPart2 at x17 width 5 is string
+paragraph.Dash5 at x24 text '-' width 1
+Text.ISONoPart3 at x26width 5 is string
+paragraph.Dash6 at x33 text '-' width 1
+Text.ISONoPart4 at x35 width 5 is string
+toggle .SiteNo2 '（分区号）' at x42 
+button .apply at x0 ymax+0.5 '确定' Apply 
+button .cancel '取消' at x22 Cancel
+!This.PIDNO.val = '管线图号'
+!This.PIDNO.seteditable( false )
+!This.ISONO.val = '图号'
+!This.ISONO.seteditable( false )
+!This.SiteNo1.val = true
+!This.SiteNo2.val = true
+!This.PIDNoPart1.val  = '2'
+!This.PIDNoPart2.val  = '3'
+!This.PIDNoPart3.val  = '4'
+!This.PIDNoPart4.val  = '5'
+!This.ISONoPart1.val = '2'
+!This.ISONoPart2.val = '3'
+!This.ISONoPart3.val = '4'
+!This.ISONoPart4.val = '5'
+exit
+
+
+Define method .pidno() $*缺省构造方法,与Form同名,不带参数
+	!this.ce.callback = '!this.ce()'
+
+	!this.apply.callback = '!this.apply()'
+
+endmethod
+
+--Define method .doinput() $*响应操作,’.’前面加空格
+--!this.add.callback = !this.input.val $*!this = !!hello, val 表示value
+--endmethod
+
+Define method .ce()
+
+	!this.cename.val = fullname
+
+endmethod
+
+Define method .apply()
+
+	VAR !PIPES COLL ALL PIPE FOR CE
+	
+	!PIDNoPart1 = !This.PIDNoPart1.val 
+	!PIDNoPart2 = !This.PIDNoPart2.val 
+	!PIDNoPart3 = !This.PIDNoPart3.val 
+	!PIDNoPart4 = !This.PIDNoPart4.val 
+	!SiteNo1 = !This.SiteNo1.val 
+	
+	!ISONoPart1 = !This.ISONoPart1.val 
+	!ISONoPart2 = !This.ISONoPart2.val 
+	!ISONoPart3 = !This.ISONoPart3.val 
+	!ISONoPart4 = !This.ISONoPart4.val 
+	!SiteNo2 = !This.SiteNo2.val 
+	
+	
+	IF(!SiteNo1.Boolean()) then
+		if (!SiteNo2.Boolean()) then
+			if(!PIDNoPart4 neq '' and !ISONoPart4 neq '') then
+				DO !PIPE VALUES !PIPES 
+					$!PIPE
+					!NAME=NAME OF $!PIPE
+					!NameA = !name.after('/')
+					if(match (!NAME , '(') neq 0 ) then
+			
+						!PIDNO=!NameA.PART($!PIDNoPart1,'-') + '-' + !NameA.PART($!PIDNoPart2,'-') + '-' + !NameA.PART($!PIDNoPart3,'-') + '-' + !NameA.PART($!PIDNoPart4,'-') + '(' + !NAME.AFTER('(')
+						!ISONO=!NameA.PART($!ISONoPart1,'-') + '-' + !NameA.PART($!ISONoPart2,'-') + '-' + !NameA.PART($!ISONoPart3,'-') + '-' + !NameA.PART($!PIDNoPart4,'-') + '(' + !NAME.AFTER('(')
+
+
+						:ISONUMBER '$!ISONO'
+						DSCO '$!PIDNO'
+					ELSE
+						!!Alert.Error('管线名称中未包含分区号')
+						break
+					endif
+				enddo
+			elseif(!PIDNoPart4 neq '' and !ISONoPart4 eq '') then
+				DO !PIPE VALUES !PIPES 
+					$!PIPE
+					!Name=NAME OF $!PIPE
+					!NameA = !name.after('/')
+					if(match (!NAME , '(') neq 0 ) then
+			
+						!PIDNO=!NameA.PART($!PIDNoPart1,'-') + '-' + !NameA.PART($!PIDNoPart2,'-') + '-' + !NameA.PART($!PIDNoPart3,'-') + '-' + !NameA.PART($!PIDNoPart4,'-') + '(' + !NameA.AFTER('(')
+						!ISONO=!NameA.PART($!ISONoPart1,'-') + '-' + !NameA.PART($!ISONoPart2,'-') + '-' + !NameA.PART($!ISONoPart3,'-') + '(' + !NameA.AFTER('(')
+
+
+						:ISONUMBER '$!ISONO'
+					DSCO '$!PIDNO'
+					ELSE
+						!!Alert.Error('管线名称中未包含分区号')
+						break
+					endif
+				enddo
+			else
+				DO !PIPE VALUES !PIPES 
+					$!PIPE
+					!Name=NAME OF $!PIPE
+					!NameA = !name.after('/')
+					if(match (!NAME , '(') neq 0 ) then
+			
+						!PIDNO=!NameA.PART($!PIDNoPart1,'-') + '-' + !NameA.PART($!PIDNoPart2,'-') + '-' + !NameA.PART($!PIDNoPart3,'-') + '(' + !NameA.AFTER('(')
+						!ISONO=!NameA.PART($!ISONoPart1,'-') + '-' + !NameA.PART($!ISONoPart2,'-') + '-' + !NameA.PART($!ISONoPart3,'-') + '(' + !NameA.AFTER('(')
+
+
+						:ISONUMBER '$!ISONO'
+						DSCO '$!PIDNO'
+					ELSE
+						!!Alert.Error('管线名称中未包含分区号')
+						break
+					endif
+				enddo
+			endif
+		else
+			if(!PIDNoPart4 neq '' and !ISONoPart4 neq '') then
+				DO !PIPE VALUES !PIPES 
+					$!PIPE
+					!NAME=NAME OF $!PIPE
+					!NameA = !name.after('/')
+					if(match (!NAME , '(') neq 0 ) then
+			
+						!PIDNO=!NameA.PART($!PIDNoPart1,'-') + '-' + !NameA.PART($!PIDNoPart2,'-') + '-' + !NameA.PART($!PIDNoPart3,'-') + '-' + !NameA.PART($!PIDNoPart4,'-') + '(' + !NAME.AFTER('(')
+						!ISONO=!NameA.PART($!ISONoPart1,'-') + '-' + !NameA.PART($!ISONoPart2,'-') + '-' + !NameA.PART($!ISONoPart3,'-') + '-' + !NameA.PART($!PIDNoPart4,'-') 
+
+
+						:ISONUMBER '$!ISONO'
+						DSCO '$!PIDNO'
+					ELSE
+						!!Alert.Error('管线名称中未包含分区号')
+						break
+					endif
+				enddo
+			elseif(!PIDNoPart4 neq '' and !ISONoPart4 eq '') then
+				DO !PIPE VALUES !PIPES 
+					$!PIPE
+					!Name=NAME OF $!PIPE
+					!NameA = !name.after('/')
+					if(match (!NAME , '(') neq 0 ) then
+			
+						!PIDNO=!NameA.PART($!PIDNoPart1,'-') + '-' + !NameA.PART($!PIDNoPart2,'-') + '-' + !NameA.PART($!PIDNoPart3,'-') + '-' + !NameA.PART($!PIDNoPart4,'-') + '(' + !NameA.AFTER('(')
+						!ISONO=!NameA.PART($!ISONoPart1,'-') + '-' + !NameA.PART($!ISONoPart2,'-') + '-' + !NameA.PART($!ISONoPart3,'-') 
+
+
+						:ISONUMBER '$!ISONO'
+					DSCO '$!PIDNO'
+					ELSE
+						!!Alert.Error('管线名称中未包含分区号')
+						break
+					endif
+				enddo
+			else
+				DO !PIPE VALUES !PIPES 
+					$!PIPE
+					!Name=NAME OF $!PIPE
+					!NameA = !name.after('/')
+					if(match (!NAME , '(') neq 0 ) then
+			
+						!PIDNO=!NameA.PART($!PIDNoPart1,'-') + '-' + !NameA.PART($!PIDNoPart2,'-') + '-' + !NameA.PART($!PIDNoPart3,'-') + '(' + !NameA.AFTER('(')
+						!ISONO=!NameA.PART($!ISONoPart1,'-') + '-' + !NameA.PART($!ISONoPart2,'-') + '-' + !NameA.PART($!ISONoPart3,'-')
+
+
+						:ISONUMBER '$!ISONO'
+						DSCO '$!PIDNO'
+					ELSE
+						!!Alert.Error('管线名称中未包含分区号')
+						break
+					endif
+				enddo
+			endif
+		endif
+	ELSE
+		if (!SiteNo2.Boolean()) then
+			if (!PIDNoPart4 neq '' and !ISONoPart4 neq '') then
+				DO !PIPE VALUES !PIPES 
+					$!PIPE
+					!Name=NAME OF $!PIPE
+					!NameA = !name.after('/')
+		
+					!PIDNO=!NameA.PART($!PIDNoPart1,'-') + '-' + !NameA.PART($!PIDNoPart2,'-') + '-' + !NameA.PART($!PIDNoPart3,'-') + '-' + !NameA.PART($!PIDNoPart4,'-')
+					!ISONO=!NameA.PART($!ISONoPart1,'-') + '-' + !NameA.PART($!ISONoPart2,'-') + '-' + !NameA.PART($!ISONoPart3,'-') + '-' + !NameA.PART($!PIDNoPart4,'-') + '(' + !NameA.AFTER('(')
+
+
+					:ISONUMBER '$!ISONO'
+					DSCO '$!PIDNO'
+
+				ENDDO
+			elseif (!PIDNoPart4 neq '' and !ISONoPart4 eq '') then
+				DO !PIPE VALUES !PIPES 
+					$!PIPE
+					!Name=NAME OF $!PIPE
+					!NameA = !name.after('/')
+		
+					!PIDNO=!NameA.PART($!PIDNoPart1,'-') + '-' + !NameA.PART($!PIDNoPart2,'-') + '-' + !NameA.PART($!PIDNoPart3,'-') + '-' + !NameA.PART($!PIDNoPart4,'-')
+					!ISONO=!NameA.PART($!ISONoPart1,'-') + '-' + !NameA.PART($!ISONoPart2,'-') + '-' + !NameA.PART($!ISONoPart3,'-') + '(' + !NameA.AFTER('(')
+
+
+					:ISONUMBER '$!ISONO'
+					DSCO '$!PIDNO'
+
+				ENDDO
+			else
+				DO !PIPE VALUES !PIPES 
+					$!PIPE
+					!Name=NAME OF $!PIPE
+					!NameA = !name.after('/')
+		
+					!PIDNO=!NameA.PART($!PIDNoPart1,'-') + '-' + !NameA.PART($!PIDNoPart2,'-') + '-' + !NameA.PART($!PIDNoPart3,'-') 
+					!ISONO=!NameA.PART($!ISONoPart1,'-') + '-' + !NameA.PART($!ISONoPart2,'-') + '-' + !NameA.PART($!ISONoPart3,'-') + '(' + !NameA.AFTER('(') 
+
+
+					:ISONUMBER '$!ISONO'
+					DSCO '$!PIDNO'
+
+				ENDDO
+			endif
+		else
+			if (!PIDNoPart4 neq '' and !ISONoPart4 neq '') then
+				DO !PIPE VALUES !PIPES 
+					$!PIPE
+					!Name=NAME OF $!PIPE
+					!NameA = !name.after('/')
+		
+					!PIDNO=!NameA.PART($!PIDNoPart1,'-') + '-' + !NameA.PART($!PIDNoPart2,'-') + '-' + !NameA.PART($!PIDNoPart3,'-') + '-' + !NameA.PART($!PIDNoPart4,'-')
+					!ISONO=!NameA.PART($!ISONoPart1,'-') + '-' + !NameA.PART($!ISONoPart2,'-') + '-' + !NameA.PART($!ISONoPart3,'-') + '-' + !NameA.PART($!PIDNoPart4,'-')
+
+
+					:ISONUMBER '$!ISONO'
+					DSCO '$!PIDNO'
+
+				ENDDO
+			elseif (!PIDNoPart4 neq '' and !ISONoPart4 eq '') then
+				DO !PIPE VALUES !PIPES 
+					$!PIPE
+					!Name=NAME OF $!PIPE
+					!NameA = !name.after('/')
+		
+					!PIDNO=!NameA.PART($!PIDNoPart1,'-') + '-' + !NameA.PART($!PIDNoPart2,'-') + '-' + !NameA.PART($!PIDNoPart3,'-') + '-' + !NameA.PART($!PIDNoPart4,'-')
+					!ISONO=!NameA.PART($!ISONoPart1,'-') + '-' + !NameA.PART($!ISONoPart2,'-') + '-' + !NameA.PART($!ISONoPart3,'-')
+
+
+					:ISONUMBER '$!ISONO'
+					DSCO '$!PIDNO'
+
+				ENDDO
+			else
+				DO !PIPE VALUES !PIPES 
+					$!PIPE
+					!Name=NAME OF $!PIPE
+					!NameA = !name.after('/')
+		
+					!PIDNO=!NameA.PART($!PIDNoPart1,'-') + '-' + !NameA.PART($!PIDNoPart2,'-') + '-' + !NameA.PART($!PIDNoPart3,'-') 
+					!ISONO=!NameA.PART($!ISONoPart1,'-') + '-' + !NameA.PART($!ISONoPart2,'-') + '-' + !NameA.PART($!ISONoPart3,'-')
+
+
+					:ISONUMBER '$!ISONO'
+					DSCO '$!PIDNO'
+
+				ENDDO
+			endif
+		endif
+	ENDIF
+
+endmethod
+
+--var !zoness coll all zone with match(name of zone, '2416-ML') neq 0 for world 
+--!zones.appendarray(!zoness)
+

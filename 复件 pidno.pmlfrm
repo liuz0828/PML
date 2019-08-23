@@ -1,0 +1,109 @@
+setup form !!pidno
+Title '刷管线号'
+--paragraph .Message text '  请输入  '
+--text .input '  请输入  ' width 10 is string $*字符串类型的编辑框
+--button .apply '添加进视图' Apply
+--exit
+
+button .ce 'CE '
+paragraph .cename text 'No name' width 25 height 1
+paragraph .Message at x0 ymax+0.5 text '请定义管线图号和图号是由哪几段组合而成的'
+Text.PIDNO at x0 ymax+0.5 width 6 is string
+Text.PIDNoPart1 at x8 width 5 is string
+paragraph.Dash1 at x15 text '-' width 1
+Text.PIDNoPart2 at x17 width 5 is string
+paragraph.Dash2 at x24 text '-' width 1
+Text.PIDNoPart3 at x26width 5 is string
+paragraph.Dash3 at x33 text '-' width 1
+Text.PIDNoPart4 at x35 width 5 is string
+Text.ISONO at x0 ymax+0.5 width 6 is string
+Text.ISONoPart1 at x8 width 5 is string
+paragraph.Dash4 at x15 text '-' width 1
+Text.ISONoPart2 at x17 width 5 is string
+paragraph.Dash5 at x24 text '-' width 1
+Text.ISONoPart3 at x26width 5 is string
+paragraph.Dash6 at x33 text '-' width 1
+Text.ISONoPart4 at x35 width 5 is string
+toggle .SiteNo '（分区号）' at x42 
+button .apply at x0 ymax+0.5 '确定' Apply 
+button .cancel '取消' at x22 Cancel
+!This.PIDNO.val = '管线图号'
+!This.PIDNO.seteditable( false )
+!This.ISONO.val = '图号'
+!This.ISONO.seteditable( false )
+!This.SiteNo.val = true
+!This.PIDNoPart1.val  = '2'
+!This.PIDNoPart2.val  = '3'
+!This.PIDNoPart3.val  = '4'
+!This.ISONoPart1.val = '2'
+!This.ISONoPart2.val = '3'
+!This.ISONoPart3.val = '4'
+exit
+
+
+Define method .pidno() $*缺省构造方法,与Form同名,不带参数
+	!this.ce.callback = '!this.ce()'
+
+	!this.apply.callback = '!this.apply()'
+
+endmethod
+
+--Define method .doinput() $*响应操作,’.’前面加空格
+--!this.add.callback = !this.input.val $*!this = !!hello, val 表示value
+--endmethod
+
+Define method .ce()
+
+	!this.cename.val = fullname
+
+endmethod
+
+Define method .apply()
+
+	VAR !PIPES COLL ALL PIPE FOR CE
+	
+	!PIDNoPart1 = !This.PIDNoPart1.val 
+	!PIDNoPart2 = !This.PIDNoPart2.val 
+	!PIDNoPart3 = !This.PIDNoPart3.val 
+	!PIDNoPart4 = !This.PIDNoPart4.val 
+	
+	!ISONoPart1 = !This.ISONoPart1.val 
+	!ISONoPart2 = !This.ISONoPart2.val 
+	!ISONoPart3 = !This.ISONoPart3.val 
+	!ISONoPart4 = !This.ISONoPart4.val 
+	
+	DO !PIPE VALUES !PIPES 
+		$!PIPE
+		!NAME=NAME OF $!PIPE
+		
+		!PIDNO=!NAME.PART($!PIDNoPart1,'-') + '-' + !NAME.PART($!PIDNoPart2,'-') + '-' + !NAME.PART($!PIDNoPart3,'-')
+		!ISONO=!NAME.PART($!ISONoPart1,'-') + '-' + !NAME.PART($!ISONoPart2,'-') + '-' + !NAME.PART($!ISONoPart3,'-')+ '(' + !NAME.AFTER('(')
+
+
+		:ISONUMBER '$!ISONO'
+		DSCO '$!PIDNO'
+  
+--!INSUREF=ISPEC OF $!PIPE
+--!INSUREFS =!INSUREF.STRING() 
+  
+--IF (!INSUREFS eq 'Unset') then
+		--:INSUTYPE ''
+		--:INSUTHK '' 
+		--skip
+--ENDIF
+
+	--!INSUS=NAME OF ISPEC OF $!PIPE
+	--!INSU =!INSUS.STRING() 
+	--!INSUR=!INSU.AFTER('/')
+	--!INSUTYPE=!INSUR.PART(2,'_')
+	--!INSUTHK=!INSUR.PART(1,'_')
+	--:INSUTYPE '$!INSUTYPE'
+	--:INSUTHK '$!INSUTHK'
+  
+ENDDO
+
+endmethod
+
+--var !zoness coll all zone with match(name of zone, '2416-ML') neq 0 for world 
+--!zones.appendarray(!zoness)
+

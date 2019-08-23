@@ -1,0 +1,79 @@
+setup form !!draintypef
+Title '排放形式F'
+
+button .applya '请选择三通件' 
+
+exit
+
+Define method .draintypef()
+
+!this.applya.callback = '!this.applya()'
+
+endmethod
+
+
+define method .applya()
+	new bran 
+	conn ph to id@
+	for
+	choose autoconnect on
+	!bspec = name of bspec of pspec of ce 
+	!bspecstr = !bspec.string()
+	!split = !bspecstr.split('-')
+	!PipeName = name of pipe of ce 
+	Do !x To 20
+		VAR !EXIST EXIST $!PipeName/B$!x
+		IF(match(!EXIST,'TRUE') GT 0) THEN
+			skip
+		else
+			Name $!PipeName/B$!x
+			break
+		endif
+	Enddo
+
+  if (!split[1] eq '/CL150') then
+		new FLAN choose with Stype 'F62R'
+		HANDLE ANY
+		ENDHANDLE
+		FLIP
+		Fconn sel lstu pos pa dist 100 from ph 
+		new GASK choose with Stype 'GBB'
+		new VALV choose with Stype '1C02'
+		new GASK choose with Stype 'GBB'
+		new PCOM choose with Stype '2C10'
+		new GASK choose with Stype 'GBB'
+		new FLAN choose with Stype '2C08'
+		bran 
+		conn pt to last mem
+	elseif (!split[1] eq '/CL300') then
+		new FLAN choose with Stype 'F63R'
+		HANDLE ANY
+		ENDHANDLE
+		FLIP
+		Fconn sel lstu pos pa dist 100 from ph 
+		new GASK choose with Stype 'GBD'
+		new VALV choose with Stype '1C03'
+		new GASK choose with Stype 'GBD'
+		new PCOM choose with Stype '2C11'
+		new GASK choose with Stype 'GBD'
+		new FLAN choose with Stype '2C09'
+		bran 
+		conn pt to last mem
+	else
+		new FLAN choose with Stype 'F66R'
+		HANDLE ANY
+		ENDHANDLE
+		FLIP
+		Fconn sel lstu pos pa dist 100 from ph 
+		new GASK choose with Stype 'GBF'
+		new VALV choose with Stype '1C06'
+		new GASK choose with Stype 'GBF'
+		new PCOM choose with Stype '2C12'
+		new GASK choose with Stype 'GBF'
+		new FLAN choose with Stype '2C10'
+		bran 
+		conn pt to last mem
+	endif
+endmethod
+
+

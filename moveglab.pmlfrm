@@ -1,0 +1,226 @@
+setup form !!moveglab
+Title '移动引线标注'
+
+button .upx5 '向上X5' at x15 y0
+button .up '向上' at x15 ymax
+button .leftx5 '向左X5' at x0 y+2
+button .left '向左' at xMAX 
+option .dist AT Xmax width 5 
+button .right '向右' at xmax 
+button .rightx5 '向右X5' at xmax 
+button .down '向下' at x15 ymax
+button .downx5 '向下X5' at x15 ymax
+exit
+
+Define method .moveglab()
+    
+    !this.upx5.callback = '!this.upx5()'
+    !this.up.callback = '!this.up()'
+    !this.leftx5.callback = '!this.leftx5()'
+    !this.left.callback = '!this.left()'
+    !this.rightx5.callback = '!this.rightx5()'
+    !this.right.callback = '!this.right()'
+    !this.downx5.callback = '!this.downx5()'
+    !this.down.callback = '!this.down()'
+
+    !distarray[1] = '0.1'
+    !distarray[2] = '1'
+    !distarray[3] = '10'
+    
+    !this.dist.dtext = !distarray
+    
+    
+endmethod
+
+
+
+
+Define method .upx5()
+  
+    !pos = xyposition of ce 
+    !xpos = !pos.east
+    !ypos = !pos.north
+
+    !bpoffset = bpoffset of ce 
+    !bpoffset1 = !bpoffset[1]
+    !bpoffset2 = !bpoffset[2]
+    !bpoffset3 = !bpoffset[3]
+    !bpoffset4 = !bpoffset[4]
+
+    !distval = !this.dist.selection()
+    !distvalreal = !distval.real()
+    
+    !upx5a = !ypos + !distvalreal * 5
+    xyposition $!xpos $!upx5a
+
+    !upx5b = !bpoffset4 + !distvalreal * 5
+    bpoffset $!bpoffset1 $!bpoffset2 $!bpoffset3 $!upx5b
+
+endmethod
+
+
+Define method .up()
+  
+    !pos = xyposition of ce 
+    !xpos = !pos.east
+    !ypos = !pos.north
+
+    !bpoffset = bpoffset of ce 
+    !bpoffset1 = !bpoffset[1]
+    !bpoffset2 = !bpoffset[2]
+    !bpoffset3 = !bpoffset[3]
+    !bpoffset4 = !bpoffset[4]
+
+    !distval = !this.dist.selection()
+    !distvalreal = !distval.real()
+    
+    !upa = !ypos + !distvalreal
+    xyposition $!xpos $!upa
+
+    !upb = !bpoffset4 + !distvalreal
+    bpoffset $!bpoffset1 $!bpoffset2 $!bpoffset3 $!upb
+
+endmethod
+
+
+Define method .downx5()
+  
+    !pos = xyposition of ce 
+    !xpos = !pos.east
+    !ypos = !pos.north
+
+    !bpoffset = bpoffset of ce 
+    !bpoffset1 = !bpoffset[1]
+    !bpoffset2 = !bpoffset[2]
+    !bpoffset3 = !bpoffset[3]
+    !bpoffset4 = !bpoffset[4]
+
+    !distval = !this.dist.selection()
+    !distvalreal = !distval.real()
+    
+    !downx5a = !ypos - !distvalreal * 5
+    xyposition $!xpos $!downx5a
+
+    !downx5b = !bpoffset4 - !distvalreal * 5
+    bpoffset $!bpoffset1 $!bpoffset2 $!bpoffset3 $!downx5b
+
+endmethod
+
+
+Define method .down()
+  
+    !pos = xyposition of ce 
+    !xpos = !pos.east
+    !ypos = !pos.north
+
+    !bpoffset = bpoffset of ce 
+    !bpoffset1 = !bpoffset[1]
+    !bpoffset2 = !bpoffset[2]
+    !bpoffset3 = !bpoffset[3]
+    !bpoffset4 = !bpoffset[4]
+
+    !distval = !this.dist.selection()
+    !distvalreal = !distval.real()
+    
+    !downa = !ypos - !distvalreal
+    xyposition $!xpos $!downa
+
+    !downb = !bpoffset4 - !distvalreal
+    bpoffset $!bpoffset1 $!bpoffset2 $!bpoffset3 $!downb
+
+endmethod
+
+
+Define method .leftx5()
+  
+    !pos = xyposition of ce 
+    !xpos = !pos.east
+    !ypos = !pos.north
+
+    !bpoffset = bpoffset of ce 
+    !bpoffset1 = !bpoffset[1]
+    !bpoffset2 = !bpoffset[2]
+    !bpoffset3 = !bpoffset[3]
+    !bpoffset4 = !bpoffset[4]
+
+    !distval = !this.dist.selection()
+    !distvalreal = !distval.real()
+    
+    !leftx5a = !xpos - !distvalreal * 5
+    xyposition $!leftx5a $!ypos
+
+    !leftx5b = !bpoffset3 - !distvalreal * 5
+    bpoffset $!bpoffset1 $!bpoffset2 $!leftx5b $!bpoffset4
+
+endmethod
+
+
+Define method .left()
+  
+    !pos = xyposition of ce 
+    !xpos = !pos.east
+    !ypos = !pos.north
+
+    !bpoffset = bpoffset of ce 
+    !bpoffset1 = !bpoffset[1]
+    !bpoffset2 = !bpoffset[2]
+    !bpoffset3 = !bpoffset[3]
+    !bpoffset4 = !bpoffset[4]
+
+    !distval = !this.dist.selection()
+    !distvalreal = !distval.real()
+    
+    !lefta = !xpos - !distvalreal
+    xyposition $!lefta $!ypos
+
+    !leftb = !bpoffset3 - !distvalreal
+    bpoffset $!bpoffset1 $!bpoffset2 $!leftb $!bpoffset4
+
+endmethod
+
+Define method .rightx5()
+  
+    !pos = xyposition of ce 
+    !xpos = !pos.east
+    !ypos = !pos.north
+
+    !bpoffset = bpoffset of ce 
+    !bpoffset1 = !bpoffset[1]
+    !bpoffset2 = !bpoffset[2]
+    !bpoffset3 = !bpoffset[3]
+    !bpoffset4 = !bpoffset[4]
+
+    !distval = !this.dist.selection()
+    !distvalreal = !distval.real()
+    
+    !rightx5a = !xpos + !distvalreal * 5
+    xyposition $!rightx5a $!ypos
+
+    !rightx5b = !bpoffset3 + !distvalreal * 5
+    bpoffset $!bpoffset1 $!bpoffset2 $!rightx5b $!bpoffset4
+
+endmethod
+
+
+Define method .right()
+  
+    !pos = xyposition of ce 
+    !xpos = !pos.east
+    !ypos = !pos.north
+
+    !bpoffset = bpoffset of ce 
+    !bpoffset1 = !bpoffset[1]
+    !bpoffset2 = !bpoffset[2]
+    !bpoffset3 = !bpoffset[3]
+    !bpoffset4 = !bpoffset[4]
+
+    !distval = !this.dist.selection()
+    !distvalreal = !distval.real()
+    
+    !righta = !xpos + !distvalreal
+    xyposition $!righta $!ypos
+
+    !rightb = !bpoffset3 + !distvalreal
+    bpoffset $!bpoffset1 $!bpoffset2 $!rightb $!bpoffset4
+
+endmethod
