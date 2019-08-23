@@ -1,0 +1,217 @@
+Software Customisation Guide   12.0  
+ 
+    Chapter: Gadget Set   
+
+
+20.1.2 Complex Form Layout 
+The figure below illustrates Tabset frames, Text gadgets, Options, Lists, Text Panes, Paragraphs and Buttons. Note that this is a fully functional, docking form which illustrates the use of form methods, particularly the Constructor method, and the use of open callbacks. It also demonstrates the use of the gadget's dock and anchor attributes to achieve forms with intelligent resize behaviour. 
+
+ 
+
+Figure 20:2. Complex Form Layout 
+ 
+
+Figure 20:3. The tabbed pages of a complex form 
+The file layout2.pmlfrm, shown below, defines the form shown in Figure 20:3.: The tabbed pages of a complex form. Within the form definition the TABSET frame is defined and directly contains a frame gadget for each tabbed page. Note its ANCHOR ALL setting which maintains the distance between each edge of the frame and the corresponding edge of the form, when the form is resized by the user. This allows the frame to grow and shrink without overwriting gadgets outside of it. 
+
+Each tabbed page frame contains the definition of all the gadgets belonging to the page. Note the use of the DOCK FILL setting which allows each edge of the tabbed page frame to stick to the corresponding edge of the TABSET frame so that they grow and shrink in unison. 
+
+Alternatively, when you define a TABSET FRAME, you can specify its DOCK or ANCHOR attributes to determine its resize behaviour within your form. 
+
+For each tabbed-page frame within the TABSET, it is no longer necessary to specify any DOCK or ANCHOR attribute settings, and any that are specified will be ignored. Each tabbed-page frame will always fill the available space in its TABSET parent (it exhibits DOCK FILL behaviour). 
+
+The gadget ANCHOR attribute is used extensively to allow resizable gadgets to expand in specific directions and not others for. It is also used by non-resizable gadgets, e.g. BUTTONs, to allow them to move with edges of their containers and so avoid being overlaid by resizing gadgets. 
+
+Note also, the extensive use of form methods to provide the intelligence of the form as gadget callbacks. In particular the method listCallback(!list is GADGET, !event is STRING), which just reports details of select and unselect events on list fields, has the standard form of an open callback, and is used as such on the list gadgets LI1 and LI2, i.e. !this.Li1.callback = |!this.listCallback(|. Open callbacks are described in PML Open Callbacks. 
+
+-- PDMS Customisation User Guide
+-- Form layout2 - Demonstrate complex form layout
+setup form !!layout2 dialog docking
+  title 'Form !!layout2'
+  paragraph .Message width 40 lines 3
+  path DOWN
+  frame .Tabset TABSET 'tabset' anchor All
+    frame .page1 |Page 1| dock Fill
+      frame .frame4 'Frame 4'
+        paragraph .Message4 text 'This is an option 
+gadget' width 16
+        option .Colour 'Colour'width 5 tooltip'select 
+colour for paragraph'
+      exit
+      frame .frame6 'Frame 6'
+        halign right 
+        paragraph .Message6 text 'These are right aligned 
+text gadgets' width 16 lines 2
+        text .Width  'Width ' width 5 is REAL
+        text .Height 'Height' width 5 is REAL
+        text .Area   'Area  ' width 5 is REAL
+        halign left 
+        button .b3 |area| tooltip'calculate the area'
+      exit
+      frame .frame5 'Frame 5' at Xmax.frame4+2 Ymin.frame4 
+anchor All
+        paragraph .Message5 text 'This is a multi-choice 
+list gadget' wid 20
+        list .Li1 'Select some of these' anchor all 
+MULTIPLE width 20 height 10
+        button .b1 |print| Anchor L + B tooltip'print list 
+selections'
+      exit
+    exit
+    frame .page2 |Page 2| at 0 0 dock Fill
+      frame .frame7 'Frame 7' dock left width 20 height 10
+        textpane .text 'Textpane: Write in here' dock Fill 
+width 1 height 1
+      exit
+      frame .frame8 'Frame 8' at Xmax.frame7 y 0 anchor 
+All
+        path down
+        paragraph .Message8 text 'Multi-column, single-
+choice list' width 15 lines 2
+        list .li2 |Cars (zero-select)| anchor T+B+L+R 
+columns single zerosel width 15 height 11
+        button .b2 |print| Anchor L + B tooltip'print list 
+selection'
+      exit
+    exit
+  exit
+  path right
+  button .CANCEL at XMIN form YMAX form anchor L + B 
+CANCEL 
+  button .RESET anchor L + B RESET
+  button .OK at XMAX form-size anchor R+B OK
+exit
+define method .layout2()
+  -- Constructor - initialise gadget values
+  -- main form gadgets
+  -- paragraph
+  !this.message.val = |Complex form layout
+This shows a dockable, resizable form with tabbed page 
+frames and use of the gadget Dock and Anchor attributes|
+  -- tooltips
+  !this.CANCEL.setTooltip('discard values and hide the 
+form')
+  !this.RESET.setTooltip('reset to initial values')
+  !this.CANCEL.setTooltip('accept values and hide the 
+form')
+  --Page 1
+  -- frame 4
+    -- option
+    !ColourArray[1]='Black'
+    !ColourArray[2]='White'
+    !ColourArray[3]='Red'
+    !ColourArray[4]='Green'
+    !ColourArray[5]='Blue'
+    !This.Colour.Dtext=!ColourArray
+    -- set callback - make paragraph the selected colour
+    !this.colour.callback = |!this.message4.background = 
+!this.colour.selection('dtext')|
+  -- frame 5
+    -- multi-choice list
+    do !i from 1 to 20
+      !Elements[!i] = 'list element $!i'
+    enddo
+    !This.Li1.Dtext= !Elements
+    -- set callbacks
+    !this.b1.callback =
+|!this.printListSelections(!this.li1)|
+    !this.li1.callback = |!this.listCallback(|
+  -- frame 6
+    -- make Area read-only
+    !this.Area.seteditable( false )
+    !this.Width.val = 6.0
+    !this.Height.val = 3.5
+    !this.b3.callback = '!this.calcArea()'
+--Page 2
+  -- frame 7
+    -- textpane - add data
+    !s[1] = 'Try editing the contents of this textpane 
+gadget'
+    do !i from 2 to 100
+      !s[!i] = 'textpane line $!i'
+    enddo
+    !this.text.val = !s
+  -- frame 8
+    -- multi-column list
+    -- Define headings
+    !a[1] = 'Make'
+    !a[2] = 'Model'
+    !a[3] = '  Price'
+    !this.li2.setHeadings(!a)
+    -- set up dtext rows as array of array
+    !Row1[1] = 'Landrover'
+    !Row1[2] = 'RangeRover'
+    !Row1[3] = '£62000'
+    !Row2[1] = 'Landrover'
+    !Row2[2] = 'Defender'
+    !Row2[3] = '£23999'
+    !Row3[1] = 'Lancia'
+    !Row3[2] = 'Delta'
+    !Row3[3] = 'not for sale'
+    !Row4[1] = 'Fiat'
+    !Row4[2] = 'Tempra'
+    !Row4[3] = 'offers'
+    !Row5[1] = 'VW'
+    !Row5[2] = 'Golf GTi'
+    !Row5[3] = 'p.o.a.'
+    do !i from 1 to 5
+      !dtext[!i] = !Row$!i
+    enddo
+    !this.li2.setRows( !dtext )
+    -- Add data
+    do !i from 1 to !dtext.size()
+      !rtext[!i] = 'row $!i'
+    enddo
+    !this.li2.rtext = !rtext
+    -- set callbacks
+    !this.b2.callback = 
+|!this.printListSelection(!this.li2)|
+    !this.li2.callback = |!this.listCallback(|
+endmethod
+define method .listCallback(!list is GADGET, !event is
+STRING)
+  -- open callback to report on list events
+  -- can be used for any list gadget
+  !n = !list.pickedField
+  !sel = !list.dtext[!n]
+  !name = !list.fullname()
+  $P $!event callback on field $!n<$!sel> for list $!name
+endmethod
+define method .calcArea()
+  -- calculate the area
+  !area = !this.width.val * !this.height.val
+  !this.Area.val = !area
+endmethod
+define method .printListSelection(!list is GADGET)
+  -- report single-selection list gadget selection 
+  -- can be used for any single-choice list
+  !sel = !list.selection('Dtext')
+  !num = !list.val
+  !name = !list.fullname()
+  $P -----------------------------------------------
+  $P selected field for list $!name
+  $P Field $!num: <$!sel>
+  $P -----------------------------------------------
+endmethod
+define method .printListSelections(!list is GADGET)
+  -- report multi-selection list gadget selections
+  -- can be used for any multi-choice list 
+  !sels = !list.selection('Dtext')
+  !nums = !list.val
+  !name = !list.fullname()
+  !nvals = !sels.size()
+  $P -----------------------------------------------
+  $P $!nvals selected fields for list $!name
+  do !n from 1 to $!nvals
+    $P Field $!nums[$!n]: <$!sels[$!n]>
+  enddo
+  $P -----------------------------------------------
+endmethod
+
+         
+ 
+Copyright © 2010 AVEVA Solutions Limited
+
+  
+
+

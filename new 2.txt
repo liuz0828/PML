@@ -1,0 +1,109 @@
+
+RestrictionOrifice
+
+
+new FLAN to id@elbo choose with Stype 'F63R'
+new GASK choose with Stype 'GBB'
+new VALV choose with Stype '1C02'
+new GASK choose with Stype 'GBB'
+new FLAN choose with Stype 'F63R'
+
+自动spool
+
+!RefNo = refno of ce
+
+PREV
+conn to next
+prev
+conn to next
+pcom $!RefNo
+next
+conn to prev
+next
+conn to prev
+
+
+材料控制
+
+材料开 （管件开 管道开 都开）
+材料关  （管件关 管道关 都关）
+材料虚线带标注
+材料虚线不带标注
+
+New Branch /$!Name/B1
+!Total = 1
+Do !x To 10
+	New Branch /$!Name/B!x
+	if(41,12) then
+		Skip
+	endif
+Enddo
+
+套管
+copyrename
+	
+	!newbore =  !This.newbore.val 
+	!old = name
+	!new = !old TG
+	!type = type of $!old
+	NEW $!type $!new COPY $!old REN $!old $!new
+	
+	$!new
+	VAR !mems COLL ALL members FOR CE
+	DO !mem VALUES !mems
+		!type = type of $!mem
+		
+		if(!type.match('PIPE')) then
+			
+			bore $!newbore
+			
+		elseif(!type.match('BRAN'))then
+		
+			HBORE $!newbore
+			TBORE $!newbore
+			!HSTUBE = HSTUBE OF CE
+			!HSTUBENAME = NAME OF $!HSTUBE
+			!HSTUBENAMESHORT = !HSTUBENAME.STRING().BEFORE(':')
+			HSTUBE $!HSTUBENAMESHORT:$!newbore
+			
+		else
+			
+			
+			
+		endif
+	
+
+		
+	ENDDO
+
+
+
+
+VAR !Attas COLL ALL ATTA FOR CE
+DO !Atta VALUES !Attas
+		
+		$!Atta mtoc off
+		
+	ENDDO
+
+
+VAR !Equis COLL ALL EQUI FOR CE
+
+!ErrorList = ARRAY()
+
+DO !Equi VALUES !Equis
+		
+		!ORI = ORI of $!Equi WRT WORLD
+		IF(!ORI.STRING().MATCH('Y is N') GT 0 ) THEN  
+			skip
+		else 
+			!ErrorList.Append(!Equi)
+		
+ENDDO
+
+$p $!ErrorList
+
+
+rotata thro !name by 90
+
+

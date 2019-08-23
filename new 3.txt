@@ -1,0 +1,26 @@
+Do !x To 20
+	VAR !EXIST EXIST /80-AL-002101-2TB18-WT/B$!x
+    IF(match(!EXIST,'TRUE') GT 0) THEN
+		skip
+	else
+		New Branch /80-AL-002101-2TB18-WT/B$!x
+		break
+	endif
+Enddo
+
+--VAR !EXIST EXIST /80-AL-002101-2TB18-WT/B$!x
+--IF(match(!EXIST,'TRUE') GT 0) THEN
+      --!!alert.message('$!new exist.')
+      --!this.to.val = ''
+  -- endif 
+
+
+Var !TUBEs Coll All TUBI EXCLUSIVE Within Volume CE 1500
+!BoxPos = WORPOS OF CE 
+!BoxPosUp = !BoxPos.UP
+Do !TUBE values !TUBEs
+	new atta
+	spref /AVEVA-ATTA-SPEC/FLOR:ANY 
+    ATTY FLOR  
+	AT UP $!BoxPosUp
+Enddo
