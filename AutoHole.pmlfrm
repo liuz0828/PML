@@ -1,0 +1,60 @@
+setup form !!AutoHole size 20 10
+Title 'AutoHole'
+
+button .ce 'CE '
+exit
+
+Define method .AutoHole()
+	
+	!this.ce.callback = '!this.ce()'
+
+endmethod
+
+Define method .ce()
+
+	!BoxPos = WORPOS OF CE 
+	!BoxPosUp = !BoxPos.UP
+	Var !TUBEs Coll All TUBI Within Volume CE 
+	
+	Do !TUBE values !TUBEs
+	
+		$!TUBE
+		!ORI = ORI of $!TUBE WRT WORLD
+		
+		IF(!ORI.STRING().MATCH('Y is N') GT 0 ) THEN  
+		
+			BREAK
+			
+		ELSEIF(!ORI.STRING().MATCH('Y is E') GT 0 ) THEN  
+		
+			BREAK
+		
+		ELSE
+		
+			!lstube = lstube of pre
+			handle any
+				!lstube = hstube of owner
+			endhandle  
+			!bore = lbore of pre 
+			handle any
+				!bore = hbore of owner
+			endhandle 
+			new atta
+			spref /AVEVA-ATTA-SPEC/FLOR:ANY 
+			ATTY FLOR  
+			desp $!bore
+			lstube $!lstube
+			conn
+			!AttaPos = WORPOS OF CE
+			!AttaPosEast = !AttaPos.East
+			!AttaPosNorth = !AttaPos.North
+			AT E $!AttaPosEast N $!AttaPosNorth U $!BoxPos.UP
+		
+		endif
+	Enddo
+
+	NEW NCYLINDER
+	AT E $!AttaPosEast N $!AttaPosNorth U $!BoxPos.UP WRT WORLD
+
+	
+endmethod
